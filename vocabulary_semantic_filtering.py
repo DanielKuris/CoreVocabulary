@@ -7,12 +7,11 @@ import numpy as np
 import torch
 import sys
 import runpy
-
 import pandas as pd
-
 import csreparser
 
 voc_size = int(sys.argv[1])
+
 
 # Download necessary NLTK data
 nltk.download('brown')
@@ -93,6 +92,7 @@ def filter_vocabulary(vocabulary, model, threshold=0.7):
     return filtered_words
 
 
+
 # Step 4: Contextual Embeddings using Transformers
 def load_transformer_model():
     tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     print("Done! ------- basic_words")
 
     # Filtering with Embeddings (GloVe)
-    glove_file = 'glove.6B.100d.txt'  # Ensure this file is in the correct path
+    glove_file = 'glove.6B.100d.txt'  # Ensure this file is in the correct path 
     glove_model = load_glove_embeddings(glove_file)
     glove_filtered_words = filter_vocabulary(basic_words, glove_model)
     print("Done! ------- glove_filtered_words")

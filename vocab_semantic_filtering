@@ -1,0 +1,67 @@
+import nltk
+from nltk.corpus import brown, stopwords, wordnet as wn
+from collections import Counter
+from gensim.models import KeyedVectors
+from transformers import AutoTokenizer, AutoModel
+import numpy as np
+import torch
+import sys
+import runpy
+import pandas as pd
+import csreparser
+import UtilityFunctions as uf
+from sklearn.metrics.pairwise import cosine_similarity
+
+voc_size = int(sys.argv[1])
+
+def _ensure_nltk_resources():
+    resources = {
+        'brown': 'corpora/brown',
+        'stopwords': 'corpora/stopwords',
+        'punkt': 'tokenizers/punkt',
+        'wordnet': 'corpora/wordnet',
+    }
+    for name, path in resources.items():
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(name, quiet=True)
+
+_ensure_nltk_resources()
+print("NLTK resources available.")
+
+
+def get_similar_words(vocab_embeddings, threshold=0.7):
+
+    embedding_matrix = np.vstack(vocab_embeddings.values())
+
+    # Compute similarity of each pair in vocabulary
+    similarity_matrix = cosine_similarity(embedding_matrix)
+
+    # Initialize a list to store filtered words
+    similar_words = []
+
+    # Loop over each word and its similarity scores
+    for i, word in enumerate(vocab_embeddings.keys()):
+        # Get all words that have similarity greater than the threshold
+        similar_indices = np.where((similarity_matrix[i] > threshold) & (similarity_matrix[i] < 1.0))[0]
+        if len(similar_indices) > 0:
+            similar_words.append(word)
+
+    return similar_words
+
+# Main Execution
+if __name__ == "__main__":
+    
+    vocab = brown.words()
+    vocab = uf.remove_stop_words(vocab)
+    group_words = uf.get_all_hypernyms(vocab)
+    unique_group_words = list(set(group_words))
+    glove_filtered_words = uf.get_glove_vocab_embeddings(group_words)
+    glove_filtered_words = uf.order_vocabulary(glove_filtered_words)
+    
+    df = pd.DataFrame({'vocabulary': glove_filtered_words})
+    df.to_csv('vocab'+str(voc_size)+'.csv')
+    csreparser.extract_words_in_format('vocab'+str(voc_size)+'.csv','vocab_words_formatted.txt')
+    runpy.run_path('get_vocab_dict.py')
+

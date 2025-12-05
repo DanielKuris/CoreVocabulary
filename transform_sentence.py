@@ -1,28 +1,15 @@
 import sys
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from nltk.corpus import stopwords
 import UtilityFunctions as uf # Self written file
-
-# Gets a sentence and a vocabulary set
-# Returns the sentence without stop words (unless they are in the vocabulary!!!)
-def get_filtered_sentence(sentence, vocab):
-    stop_words = set(stopwords.words('english'))
-    words = sentence.split()
-    filtered_sentence = [
-        w for w in words if w.lower() not in stop_words or w in vocab # Keep if in vocab
-    ]
-    return ' '.join(filtered_sentence)
-
-
 
 # Returns the closest word in the vocabulary based on cosine similarity
 # Gets a word embedding and a dictionary of vocabulary embeddings
 def find_closest_word(word):
+    model, tokenizer = uf.get_bert_model() 
+    word_embedding = uf.get_word_embedding(word, model, tokenizer)
     
-    word_embedding = uf.get_word_embedding(word)
-    
-    vocab_embeddings = uf.get_vocab_embeddings() # Consider cachinng in future!!! Can't now because where tf is create sentence called from?
+    vocab_embeddings = uf.get_pkl_vocab_embeddings() 
    
     # Reshape for cosine similarity → shape: (1 × D)
     word_vec = word_embedding.reshape(1, -1)
@@ -42,9 +29,9 @@ def find_closest_word(word):
 # Reconstruct the sentence using substitutions
 # Gets a sentence, vocabulary, and dictionaries of embeddings
 def reconstruct_sentence(sentence):
-    vocab = uf.get_vocab() # Consider cachinng in future!!! Can't now because where tf is create sentence called from?
     
-    fixed_Sentence = get_filtered_sentence(sentence, vocab)
+    # Remove stop words requires a list of words
+    fixed_Sentence = uf.remove_stop_words(sentence.split())
     
     subs = {}
     for word in fixed_Sentence:
