@@ -15,7 +15,7 @@ word_bert_model = BertModel.from_pretrained('setu4993/LaBSE')
 
 def sentence_bert_embedding(sentence):
     """Generate sentence embeddings using Sentence-BERT."""
-    return [sentence_bert_model.encode(sentence)]
+    return sentence_bert_model.encode(sentence).reshape(1, -1)
 
 
 def cosine_similarity_sentences(vec1, vec2):
@@ -43,12 +43,18 @@ def word_bert_embeddings(sentence):
 
     return words, embeddings
 
+embedding_cache = {}
+
+def cached_word_embeddings(sentence):
+    if sentence not in embedding_cache:
+        embedding_cache[sentence] = word_bert_embeddings(sentence)
+    return embedding_cache[sentence]
 
 # Function to calculate modified Jaccard similarity using BERT embeddings
 def jaccard_similarity_bert(sentence1, sentence2, threshold=0.7):
     # Get words and their embeddings for both sentences
-    words1, embeddings1 = word_bert_embeddings(sentence1)
-    words2, embeddings2 = word_bert_embeddings(sentence2)
+    words1, embeddings1 = cached_word_embeddings(sentence1)
+    words2, embeddings2 = cached_word_embeddings(sentence2)
 
     # Calculate cosine similarities between every pair of words
     similarity_matrix = cosine_similarity(embeddings1, embeddings2)
@@ -68,12 +74,14 @@ def jaccard_similarity_bert(sentence1, sentence2, threshold=0.7):
 
 
 def compare_sentences(sentence_a, sentence_b):
-    cosine_sim_sentences_bert = cosine_similarity_sentences(
-        sentence_bert_embedding(sentence_a), sentence_bert_embedding(sentence_b))
-    jacard_similarity_bert = jaccard_similarity_bert(sentence_a, sentence_b)
+    emb_a = sentence_bert_embedding(sentence_a)
+    emb_b = sentence_bert_embedding(sentence_b)
+
+    cosine_sim_sentences_bert = cosine_similarity_sentences(emb_a, emb_b)
+    jaccard_sim = jaccard_similarity_bert(sentence_a, sentence_b)  # renamed variable
 
     results = {
         'cosine_similarity_sentences_BERT': cosine_sim_sentences_bert,
-        'jaccard_similarity_BERT': jacard_similarity_bert
+        'jaccard_similarity_BERT': jaccard_sim
     }
     return results

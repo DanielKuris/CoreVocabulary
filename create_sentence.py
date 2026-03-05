@@ -126,7 +126,7 @@ def create_sentence(original_sentence, embbedings_path="vocab_embeddings_dict.pk
 
 # Example usage
 if __name__ == "__main__":
-    sentence = "The kid had a gun"
+    sentence = "My family enjoys and likes candy"
 
     vocabulary = curr_vocab
 

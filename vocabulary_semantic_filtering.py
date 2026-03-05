@@ -10,7 +10,7 @@ import runpy
 import pandas as pd
 import csreparser
 
-voc_size = int(sys.argv[1])
+voc_size = 600
 
 
 # Download necessary NLTK data

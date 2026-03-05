@@ -7,6 +7,7 @@ from sentence_similarity import compare_sentences
 import pickle as pkl
 from nltk.corpus import  stopwords , wordnet as wn
 from gensim.models import KeyedVectors
+import statistics
 
 
 # Returns the embedding vector for the given word
@@ -65,16 +66,20 @@ def load_transformer_model():
 # Compares the original and transformed sentences 
 def similarity_checker(original_sentence, transformed_sentence):
     similarities = compare_sentences(original_sentence, transformed_sentence)
-    print(f"Cosine Similarity (Sentence-BERT): {similarities['cosine_similarity_sentences_BERT']}")
-    print(f"jaccard Similarity (Sentence-BERT): {similarities['jaccard_similarity_BERT']}")
+    return similarities
 
 def remove_stop_words(vocab):
-    # filter stopwords (i.e. 'i', 'me', 'am', 'are', 'because', etc...)
     stop_words = set(stopwords.words('english'))
-    # convert to lower case latter, filter non-alphabetic characters and remove stop words
-    vocab = [word.lower() for word in vocab if word.isalpha() and word not in stop_words]
-    
-    return ' '.join(vocab)
+
+    filtered_words = [
+        word.lower()
+        for word in vocab
+        if isinstance(word, str) 
+           and word.isalpha() 
+           and word.lower() not in stop_words
+    ]
+    return list(filtered_words) 
+
 
 # Returns the vocabulary ordered by commonality
 def order_vocabulary(vocab):
@@ -116,3 +121,37 @@ def get_bert_model():
     tokenizer = BertTokenizer.from_pretrained('setu4993/LaBSE')
     model = BertModel.from_pretrained('setu4993/LaBSE')
     return model, tokenizer
+
+def get_words_to_replace(sentence, vocab):
+    words = sentence.split()
+    words_to_replace = [w for w in words if w not in vocab]
+    return words_to_replace
+
+# Write similarity test results to a file
+# Gets a dictionary of results that contains original sentences, transformed sentences, and their similarities 
+def write_test_results(results, output_file="SimilarityTests/TestResults.txt"):
+    cosine_scores = []
+    jaccard_scores = []
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        for original, data in results.items():
+            transformed = data["transformed"]
+            cosine = data["similarities"]["cosine_similarity_sentences_BERT"]
+            jaccard = data["similarities"]["jaccard_similarity_BERT"]
+
+            cosine_scores.append(cosine)
+            jaccard_scores.append(jaccard)
+
+            f.write(f"Original Sentence: {original}\n")
+            f.write(f"Transformed Sentence: {transformed}\n")
+            f.write(f"Cosine Similarity: {cosine}\n")
+            f.write(f"Jaccard Similarity: {jaccard}\n\n")
+            
+
+        f.write("Cosine Similarity:\n")
+        f.write(f"Average: {statistics.mean(cosine_scores)}\n")
+        f.write(f"Median: {statistics.median(cosine_scores)}\n\n")
+
+        f.write("Jaccard Similarity:\n")
+        f.write(f"Average: {statistics.mean(jaccard_scores)}\n")
+        f.write(f"Median: {statistics.median(jaccard_scores)}\n")
