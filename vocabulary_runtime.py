@@ -2,14 +2,11 @@ from pathlib import Path
 import pickle as pkl
 import statistics
 
-from gensim.models import KeyedVectors
+import numpy as np
 from nltk.corpus import stopwords
 from sklearn.preprocessing import normalize
 from transformers import BertTokenizer, BertModel
-import numpy as np
 import torch
-
-from similarity_metrics import compare_sentences
 
 
 DEFAULT_VOCAB_PATH = Path("vocab_words_formatted.txt")
@@ -44,11 +41,6 @@ def load_replacement_model():
     return model, tokenizer
 
 
-def compare_original_and_transformed(original_sentence, transformed_sentence):
-    """Return similarity scores for two sentences."""
-    return compare_sentences(original_sentence, transformed_sentence)
-
-
 def filter_replaceable_words(words):
     """Keep alphabetic, non-stopword tokens and lowercase them."""
     stop_words = set(stopwords.words("english"))
@@ -62,19 +54,6 @@ def filter_replaceable_words(words):
 def find_out_of_vocabulary_words(sentence, vocabulary):
     """Return tokens that are not part of the allowed vocabulary."""
     return [word for word in sentence.split() if word not in vocabulary]
-
-
-def load_glove_vocab_embeddings(vocabulary, glove_file="glove.6B.100d.txt"):
-    """Return GloVe embeddings for vocabulary words present in the model."""
-    model = KeyedVectors.load_word2vec_format(glove_file, binary=False, no_header=True)
-    try:
-        vocab_embeddings = {word: model[word] for word in vocabulary if word in model}
-        if not vocab_embeddings:
-            raise ValueError("no words from vocabulary found in model")
-    except Exception:
-        print("no words found from vocabulary found in model")
-        return {}
-    return vocab_embeddings
 
 
 def summarize_similarity_results(results):

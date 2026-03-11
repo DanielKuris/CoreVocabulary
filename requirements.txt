@@ -4,5 +4,3 @@ transformers
 sentence-transformers
 scikit-learn
 nltk
-gensim
-pandas
