@@ -3,10 +3,12 @@ from pathlib import Path
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
+from config_runtime import get_stopword_mode
 from similarity_metrics import compare_sentences
 from vocabulary_runtime import (
     embed_word,
     filter_replaceable_words,
+    is_replaceable_word,
     load_replacement_model,
     load_vocab_embeddings,
     load_vocabulary,
@@ -18,6 +20,7 @@ from vocabulary_runtime import (
 DEFAULT_INPUT_PATH = Path("SimilarityTests/TestSentences.txt")
 DEFAULT_OUTPUT_PATH = Path("SimilarityTests/TestResults.txt")
 MODEL, TOKENIZER = load_replacement_model()
+STOPWORD_MODE = get_stopword_mode()
 VOCABULARY = load_vocabulary()
 VOCAB_EMBEDDINGS = load_vocab_embeddings()
 
@@ -32,6 +35,16 @@ def find_closest_vocabulary_word(word):
     return list(VOCAB_EMBEDDINGS.keys())[closest_index]
 
 
+def keep_original_word(word):
+    """Return whether a word should stay unchanged in the rewritten sentence."""
+    normalized_word = word.lower()
+    if normalized_word in VOCABULARY:
+        return True
+    if STOPWORD_MODE == "preserve_original_stopwords" and not is_replaceable_word(word):
+        return True
+    return False
+
+
 def rewrite_sentence(sentence):
     """Return a sentence with out-of-vocabulary content words replaced."""
     words = sentence.split()
@@ -40,9 +53,9 @@ def rewrite_sentence(sentence):
     rewritten_words = []
     for word in words:
         normalized_word = word.lower()
-        if normalized_word in VOCABULARY or normalized_word not in replaceable_words:
+        if keep_original_word(word):
             rewritten_words.append(word)
-        else:
+        elif normalized_word in replaceable_words:
             rewritten_words.append(find_closest_vocabulary_word(normalized_word))
 
     return " ".join(rewritten_words)
@@ -78,6 +91,7 @@ def print_run_summary(results):
     """Print summary statistics for a batch run."""
     summary = summarize_similarity_results(results)
     print(f"Test sentences processed: {summary['sentence_count']}")
+    print(f"Stopword mode: {STOPWORD_MODE}")
     print(f"Average cosine similarity: {summary['cosine']['average']:.5f}")
     print(f"Median cosine similarity: {summary['cosine']['median']:.5f}")
     print(f"Cosine similarity 90th percentile: {summary['cosine']['p90']:.5f}")

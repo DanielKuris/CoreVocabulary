@@ -12,6 +12,7 @@ import torch
 DEFAULT_VOCAB_PATH = Path("vocab_words_formatted.txt")
 DEFAULT_VOCAB_EMBEDDINGS_PATH = Path("vocab_embeddings_dict.pkl")
 DEFAULT_RESULTS_PATH = Path("SimilarityTests/TestResults.txt")
+STOP_WORDS = set(stopwords.words("english"))
 
 
 def embed_word(word, model, tokenizer):
@@ -41,19 +42,14 @@ def load_replacement_model():
     return model, tokenizer
 
 
+def is_replaceable_word(word):
+    """Return whether a word should be replaced rather than kept as-is."""
+    return isinstance(word, str) and word.isalpha() and word.lower() not in STOP_WORDS
+
+
 def filter_replaceable_words(words):
     """Keep alphabetic, non-stopword tokens and lowercase them."""
-    stop_words = set(stopwords.words("english"))
-    return [
-        word.lower()
-        for word in words
-        if isinstance(word, str) and word.isalpha() and word.lower() not in stop_words
-    ]
-
-
-def find_out_of_vocabulary_words(sentence, vocabulary):
-    """Return tokens that are not part of the allowed vocabulary."""
-    return [word for word in sentence.split() if word not in vocabulary]
+    return [word.lower() for word in words if is_replaceable_word(word)]
 
 
 def metric_summary(scores):

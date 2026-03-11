@@ -8,10 +8,20 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 
 - `sentence_rewriter.py`: loads the vocabulary and embeddings, rewrites the test sentences, writes results, and prints summary statistics.
 - `similarity_metrics.py`: computes sentence-level cosine similarity, exact Jaccard similarity, and semantic token overlap.
-- `vocabulary_runtime.py`: loads vocabulary data, filters replaceable words, and writes result summaries.
+- `vocabulary_runtime.py`: loads vocabulary data and writes result summaries.
+- `config_runtime.py`: loads and validates project settings.
+- `project_config.json`: project settings for the rewrite behavior.
 - `vocab_words_formatted.txt`: allowed vocabulary list.
 - `vocab_embeddings_dict.pkl`: embeddings for the allowed vocabulary.
 - `vocab600.csv`: saved vocabulary file.
+
+## Config
+
+`project_config.json` currently supports one setting:
+
+- `stopword_mode`
+  - `preserve_original_stopwords`: keep stopwords from the original sentence even if they are not in the vocabulary
+  - `vocab_only`: keep only words that are in the vocabulary, so stopwords outside the vocabulary are dropped
 
 ## Metrics
 
@@ -29,4 +39,4 @@ Install the packages in `requirements.txt`.
 python sentence_rewriter.py
 ```
 
-The script reads test sentences from `SimilarityTests/TestSentences.txt`, rewrites them using the provided vocabulary, compares the rewritten sentences to the originals, and writes the results to `SimilarityTests/TestResults.txt`.
+The script reads test sentences from `SimilarityTests/TestSentences.txt`, rewrites them using the provided vocabulary and the current config settings, compares the rewritten sentences to the originals, and writes the results to `SimilarityTests/TestResults.txt`.
