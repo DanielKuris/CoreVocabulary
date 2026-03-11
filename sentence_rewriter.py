@@ -1,9 +1,6 @@
 from pathlib import Path
 
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-
-from config_runtime import get_stopword_mode
+from heuristics import get_heuristic_builder
 from similarity_metrics import compare_sentences
 from vocabulary_runtime import (
     embed_word,
@@ -15,24 +12,23 @@ from vocabulary_runtime import (
     summarize_similarity_results,
     write_similarity_results,
 )
+from config_runtime import get_heuristic_config, get_stopword_mode
 
 
 DEFAULT_INPUT_PATH = Path("SimilarityTests/TestSentences.txt")
 DEFAULT_OUTPUT_PATH = Path("SimilarityTests/TestResults.txt")
 MODEL, TOKENIZER = load_replacement_model()
+HEURISTIC_CONFIG = get_heuristic_config()
+HEURISTIC_NAME = HEURISTIC_CONFIG["name"]
 STOPWORD_MODE = get_stopword_mode()
 VOCABULARY = load_vocabulary()
 VOCAB_EMBEDDINGS = load_vocab_embeddings()
-
-
-def find_closest_vocabulary_word(word):
-    """Return the nearest allowed-vocabulary word for a source word."""
-    word_embedding = embed_word(word, MODEL, TOKENIZER)
-    word_vector = word_embedding.reshape(1, -1)
-    vocabulary_matrix = np.vstack(list(VOCAB_EMBEDDINGS.values()))
-    similarities = cosine_similarity(word_vector, vocabulary_matrix)[0]
-    closest_index = np.argmax(similarities)
-    return list(VOCAB_EMBEDDINGS.keys())[closest_index]
+RUNTIME = {
+    "embed_word": embed_word,
+    "model": MODEL,
+    "tokenizer": TOKENIZER,
+    "vocab_embeddings": VOCAB_EMBEDDINGS,
+}
 
 
 def keep_original_word(word):
@@ -49,6 +45,7 @@ def rewrite_sentence(sentence):
     """Return a sentence with out-of-vocabulary content words replaced."""
     words = sentence.split()
     replaceable_words = set(filter_replaceable_words(words))
+    replace_word = get_heuristic_builder(HEURISTIC_NAME)(words, RUNTIME, HEURISTIC_CONFIG)
 
     rewritten_words = []
     for word in words:
@@ -56,7 +53,7 @@ def rewrite_sentence(sentence):
         if keep_original_word(word):
             rewritten_words.append(word)
         elif normalized_word in replaceable_words:
-            rewritten_words.append(find_closest_vocabulary_word(normalized_word))
+            rewritten_words.append(replace_word(normalized_word))
 
     return " ".join(rewritten_words)
 
@@ -92,6 +89,7 @@ def print_run_summary(results):
     summary = summarize_similarity_results(results)
     print(f"Test sentences processed: {summary['sentence_count']}")
     print(f"Stopword mode: {STOPWORD_MODE}")
+    print(f"Heuristic: {HEURISTIC_NAME}")
     print(f"Average cosine similarity: {summary['cosine']['average']:.5f}")
     print(f"Median cosine similarity: {summary['cosine']['median']:.5f}")
     print(f"Cosine similarity 90th percentile: {summary['cosine']['p90']:.5f}")

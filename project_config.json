@@ -1,3 +1,7 @@
 {
-  "stopword_mode": "vocab_only"
+  "stopword_mode": "vocab_only",
+  "heuristic": {
+    "name": "global_context",
+    "global_context_weight": 0.15
+  }
 }
