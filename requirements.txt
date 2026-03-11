@@ -1,7 +1,8 @@
+numpy
 torch
 transformers
-pandas
 sentence-transformers
+scikit-learn
 nltk
 gensim
-scikit-learn
+pandas

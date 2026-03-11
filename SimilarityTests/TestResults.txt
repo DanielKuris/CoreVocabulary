@@ -1,507 +1,515 @@
 Original Sentence:  The cat sits on the wall.
 Transformed Sentence: pet standing
-Cosine Similarity: 0.12535230815410614
-Jaccard Similarity: 0.46397462156083846
+Cosine Similarity: 0.12535
+Jaccard Similarity: 0.46397
 
 Original Sentence:  A boy opens the red door.
 Transformed Sentence: boy discover color
-Cosine Similarity: 0.4692035913467407
-Jaccard Similarity: 0.42291703820228577
+Cosine Similarity: 0.46920
+Jaccard Similarity: 0.42292
 
 Original Sentence:  The sun warms the quiet street.
 Transformed Sentence: dark warmness quiet
-Cosine Similarity: 0.6619558334350586
-Jaccard Similarity: 0.43045132358868915
+Cosine Similarity: 0.66196
+Jaccard Similarity: 0.43045
 
 Original Sentence:  She drinks water from a glass.
 Transformed Sentence: liquor watercolor
-Cosine Similarity: 0.6011016368865967
-Jaccard Similarity: 0.40812140703201294
+Cosine Similarity: 0.60110
+Jaccard Similarity: 0.40812
 
 Original Sentence:  A small bird flies over the lake.
 Transformed Sentence: young airplane airplane
-Cosine Similarity: 0.5937021970748901
-Jaccard Similarity: 0.41705481572584674
+Cosine Similarity: 0.59370
+Jaccard Similarity: 0.41705
 
 Original Sentence:  The teacher writes on the board.
 Transformed Sentence: didactics compose
-Cosine Similarity: 0.5149599313735962
-Jaccard Similarity: 0.409106276252053
+Cosine Similarity: 0.51496
+Jaccard Similarity: 0.40911
 
 Original Sentence:  A dog runs across the field.
 Transformed Sentence: pet running surpass
-Cosine Similarity: 0.6879581212997437
-Jaccard Similarity: 0.46950333226810803
+Cosine Similarity: 0.68796
+Jaccard Similarity: 0.46950
 
 Original Sentence:  The old clock ticks slowly.
 Transformed Sentence: past time touch
-Cosine Similarity: 0.41181737184524536
-Jaccard Similarity: 0.41406752467155455
+Cosine Similarity: 0.41182
+Jaccard Similarity: 0.41407
 
 Original Sentence:  He buys bread at the shop.
 Transformed Sentence: purchasing food
-Cosine Similarity: 0.6095179319381714
-Jaccard Similarity: 0.4511270589298672
+Cosine Similarity: 0.60952
+Jaccard Similarity: 0.45113
 
 Original Sentence: The wind moves the tall trees.
 Transformed Sentence: airplane walk mountain
-Cosine Similarity: 0.40379053354263306
-Jaccard Similarity: 0.38928953409194944
+Cosine Similarity: 0.40379
+Jaccard Similarity: 0.38929
 
 Original Sentence: A girl reads a blue book.
 Transformed Sentence: boy learn dark
-Cosine Similarity: 0.23826655745506287
-Jaccard Similarity: 0.36149280071258544
+Cosine Similarity: 0.23827
+Jaccard Similarity: 0.36149
 
 Original Sentence: The bus stops near the park.
 Transformed Sentence: train halt vicinity
-Cosine Similarity: 0.30351707339286804
-Jaccard Similarity: 0.36352176016027277
+Cosine Similarity: 0.30352
+Jaccard Similarity: 0.36352
 
 Original Sentence: A man fixes the broken chair.
 Transformed Sentence: man adjust break
-Cosine Similarity: 0.39915162324905396
-Jaccard Similarity: 0.49946593046188353
+Cosine Similarity: 0.39915
+Jaccard Similarity: 0.49947
 
 Original Sentence: The child draws a green star.
 Transformed Sentence: boy pull grassland
-Cosine Similarity: 0.31854236125946045
-Jaccard Similarity: 0.4212266640229659
+Cosine Similarity: 0.31854
+Jaccard Similarity: 0.42123
 
 Original Sentence: The phone rings in the room.
 Transformed Sentence: phone chain
-Cosine Similarity: 0.5496282577514648
-Jaccard Similarity: 0.48425816165076363
+Cosine Similarity: 0.54963
+Jaccard Similarity: 0.48426
 
 Original Sentence: A farmer walks through the corn.
 Transformed Sentence: laborer walk
-Cosine Similarity: 0.6033087968826294
-Jaccard Similarity: 0.4774514019489288
+Cosine Similarity: 0.60331
+Jaccard Similarity: 0.47745
 
 Original Sentence: The rain taps on the window.
 Transformed Sentence: touch
-Cosine Similarity: 0.21643772721290588
-Jaccard Similarity: 0.34742720052599907
+Cosine Similarity: 0.21644
+Jaccard Similarity: 0.34743
 
 Original Sentence: A cook cuts fresh carrots.
 Transformed Sentence: cook cut young
-Cosine Similarity: 0.48568886518478394
-Jaccard Similarity: 0.4829118450482686
+Cosine Similarity: 0.48569
+Jaccard Similarity: 0.48291
 
 Original Sentence: The light shines on the table.
 Transformed Sentence: fire flare-up
-Cosine Similarity: 0.41476547718048096
-Jaccard Similarity: 0.34964442253112793
+Cosine Similarity: 0.41477
+Jaccard Similarity: 0.34964
 
 Original Sentence: A train passes the small town.
 Transformed Sentence: train pass young
-Cosine Similarity: 0.6859567761421204
-Jaccard Similarity: 0.48253374695777895
+Cosine Similarity: 0.68596
+Jaccard Similarity: 0.48253
 
 Original Sentence: The boy kicks the ball.
 Transformed Sentence: boy pushing
-Cosine Similarity: 0.6763770580291748
-Jaccard Similarity: 0.5712780803442001
+Cosine Similarity: 0.67638
+Jaccard Similarity: 0.57128
 
 Original Sentence: A woman plants a flower.
 Transformed Sentence: man factory
-Cosine Similarity: 0.028587685897946358
-Jaccard Similarity: 0.350588571280241
+Cosine Similarity: 0.02859
+Jaccard Similarity: 0.35059
 
 Original Sentence: The road turns near the hill.
 Transformed Sentence: road turning vicinity
-Cosine Similarity: 0.7698336839675903
-Jaccard Similarity: 0.4667331197045066
+Cosine Similarity: 0.76983
+Jaccard Similarity: 0.46673
 
 Original Sentence: A fish swims under the boat.
 Transformed Sentence: vessel plunge
-Cosine Similarity: 0.5621516108512878
-Jaccard Similarity: 0.4929503852670843
+Cosine Similarity: 0.56215
+Jaccard Similarity: 0.49295
 
 Original Sentence: The baby laughs loudly.
 Transformed Sentence: boy humour
-Cosine Similarity: 0.5871455669403076
-Jaccard Similarity: 0.41684166342020035
+Cosine Similarity: 0.58715
+Jaccard Similarity: 0.41684
 
 Original Sentence: A student closes the laptop.
 Transformed Sentence: undergraduate end
-Cosine Similarity: 0.5746126770973206
-Jaccard Similarity: 0.44303783774375916
+Cosine Similarity: 0.57461
+Jaccard Similarity: 0.44304
 
 Original Sentence: The fire burns in the stove.
 Transformed Sentence: fire fire
-Cosine Similarity: 0.6514078974723816
-Jaccard Similarity: 0.5721835361586677
+Cosine Similarity: 0.65141
+Jaccard Similarity: 0.57218
 
 Original Sentence: A painter mixes bright colors.
 Transformed Sentence: watercolour mixture dark
-Cosine Similarity: 0.36261603236198425
-Jaccard Similarity: 0.37767567417838355
+Cosine Similarity: 0.36262
+Jaccard Similarity: 0.37768
 
 Original Sentence: The horse drinks from the river.
 Transformed Sentence: cow liquor
-Cosine Similarity: 0.38369694352149963
-Jaccard Similarity: 0.5411238604121738
+Cosine Similarity: 0.38370
+Jaccard Similarity: 0.54112
 
 Original Sentence: A man opens the gate.
 Transformed Sentence: man discover
-Cosine Similarity: 0.6246427297592163
-Jaccard Similarity: 0.4888925701379776
+Cosine Similarity: 0.62464
+Jaccard Similarity: 0.48889
 
 Original Sentence: The moon rises above the trees.
 Transformed Sentence: march rise
-Cosine Similarity: 0.3454616367816925
-Jaccard Similarity: 0.47073637114630806
+Cosine Similarity: 0.34546
+Jaccard Similarity: 0.47074
 
 Original Sentence: A girl ties her shoes.
 Transformed Sentence: boy link
-Cosine Similarity: 0.07710360735654831
-Jaccard Similarity: 0.387394517660141
+Cosine Similarity: 0.07710
+Jaccard Similarity: 0.38739
 
 Original Sentence: The dog waits by the door.
 Transformed Sentence: pet hope
-Cosine Similarity: 0.3741738200187683
-Jaccard Similarity: 0.44873457551002505
+Cosine Similarity: 0.37417
+Jaccard Similarity: 0.44873
 
 Original Sentence: A child builds a sand tower.
 Transformed Sentence: boy build grassland
-Cosine Similarity: 0.5293238162994385
-Jaccard Similarity: 0.5028682188554243
+Cosine Similarity: 0.52932
+Jaccard Similarity: 0.50287
 
 Original Sentence: The wind lifts the kite.
 Transformed Sentence: airplane staircase
-Cosine Similarity: 0.45675596594810486
-Jaccard Similarity: 0.4186401499642266
+Cosine Similarity: 0.45676
+Jaccard Similarity: 0.41864
 
 Original Sentence: A baker sells warm bread.
 Transformed Sentence: cook sale warmness
-Cosine Similarity: 0.7283613681793213
-Jaccard Similarity: 0.42218040227890014
+Cosine Similarity: 0.72836
+Jaccard Similarity: 0.42218
 
 Original Sentence: The bird lands on a fence.
 Transformed Sentence: airplane grassland
-Cosine Similarity: 0.6179589033126831
-Jaccard Similarity: 0.4811578094959259
+Cosine Similarity: 0.61796
+Jaccard Similarity: 0.48116
 
 Original Sentence: A driver starts the engine.
 Transformed Sentence: leading initiate
-Cosine Similarity: 0.4164901375770569
-Jaccard Similarity: 0.4220624193549156
+Cosine Similarity: 0.41649
+Jaccard Similarity: 0.42206
 
 Original Sentence: The leaves fall to the ground.
 Transformed Sentence: paper plunge
-Cosine Similarity: 0.5364331007003784
-Jaccard Similarity: 0.4260774850845337
+Cosine Similarity: 0.53643
+Jaccard Similarity: 0.42608
 
 Original Sentence: A boy climbs the ladder.
 Transformed Sentence: boy rise
-Cosine Similarity: 0.6516249179840088
-Jaccard Similarity: 0.5947961409886678
+Cosine Similarity: 0.65163
+Jaccard Similarity: 0.59480
 
 Original Sentence: The cup sits on the desk.
 Transformed Sentence: bottle standing
-Cosine Similarity: 0.19942079484462738
-Jaccard Similarity: 0.4684490892622206
+Cosine Similarity: 0.19942
+Jaccard Similarity: 0.46845
 
 Original Sentence: A dog follows the path.
 Transformed Sentence: pet follow
-Cosine Similarity: 0.7299259305000305
-Jaccard Similarity: 0.5376135483384132
+Cosine Similarity: 0.72993
+Jaccard Similarity: 0.53761
 
 Original Sentence: The clock shows ten.
 Transformed Sentence: time exhibit
-Cosine Similarity: 0.5789740085601807
-Jaccard Similarity: 0.440386244228908
+Cosine Similarity: 0.57897
+Jaccard Similarity: 0.44039
 
 Original Sentence: A girl waves her hand.
 Transformed Sentence: boy flowing
-Cosine Similarity: 0.31021222472190857
-Jaccard Similarity: 0.40390219539403915
+Cosine Similarity: 0.31021
+Jaccard Similarity: 0.40390
 
 Original Sentence: The book falls to the floor.
 Transformed Sentence: paper plunge
-Cosine Similarity: 0.5036821365356445
-Jaccard Similarity: 0.42482938170433043
+Cosine Similarity: 0.50368
+Jaccard Similarity: 0.42483
 
 Original Sentence: A farmer feeds the cows.
 Transformed Sentence: laborer feeding
-Cosine Similarity: 0.5717516541481018
-Jaccard Similarity: 0.4446252120865716
+Cosine Similarity: 0.57175
+Jaccard Similarity: 0.44463
 
 Original Sentence: The door closes softly.
 Transformed Sentence: entree end
-Cosine Similarity: 0.5784648060798645
-Jaccard Similarity: 0.34534603729844093
+Cosine Similarity: 0.57846
+Jaccard Similarity: 0.34535
 
 Original Sentence: A man washes the car.
 Transformed Sentence: man shower
-Cosine Similarity: 0.7066759467124939
-Jaccard Similarity: 0.503950662083096
+Cosine Similarity: 0.70668
+Jaccard Similarity: 0.50395
 
 Original Sentence: The water fills the bowl.
 Transformed Sentence: watercolor filling
-Cosine Similarity: 0.7287960648536682
-Jaccard Similarity: 0.4910570755600929
+Cosine Similarity: 0.72880
+Jaccard Similarity: 0.49106
 
 Original Sentence: A child finds a coin.
 Transformed Sentence: boy discover
-Cosine Similarity: 0.5223631858825684
-Jaccard Similarity: 0.5276731997728348
+Cosine Similarity: 0.52236
+Jaccard Similarity: 0.52767
 
 Original Sentence: The wind shakes the window.
 Transformed Sentence: airplane yell
-Cosine Similarity: 0.40218719840049744
-Jaccard Similarity: 0.3971588942739699
+Cosine Similarity: 0.40219
+Jaccard Similarity: 0.39716
 
 Original Sentence: A woman lights a candle.
 Transformed Sentence: man fire
-Cosine Similarity: 0.3490540385246277
-Jaccard Similarity: 0.45141590386629105
+Cosine Similarity: 0.34905
+Jaccard Similarity: 0.45142
 
 Original Sentence: The car turns left.
 Transformed Sentence: car turning
-Cosine Similarity: 0.7217133641242981
-Jaccard Similarity: 0.4846623880522592
+Cosine Similarity: 0.72171
+Jaccard Similarity: 0.48466
 
 Original Sentence: A dog barks at night.
 Transformed Sentence: pet lumber
-Cosine Similarity: 0.3895912766456604
-Jaccard Similarity: 0.4118175387382507
+Cosine Similarity: 0.38959
+Jaccard Similarity: 0.41182
 
 Original Sentence: The sun sets behind hills.
 Transformed Sentence: dark set past
-Cosine Similarity: 0.34179675579071045
-Jaccard Similarity: 0.3840276069111294
+Cosine Similarity: 0.34180
+Jaccard Similarity: 0.38403
 
 Original Sentence: A boy carries a bag.
 Transformed Sentence: boy bring
-Cosine Similarity: 0.7024184465408325
-Jaccard Similarity: 0.5431439206004143
+Cosine Similarity: 0.70242
+Jaccard Similarity: 0.54314
 
 Original Sentence: The teacher asks a question.
 Transformed Sentence: didactics ask
-Cosine Similarity: 0.5925455689430237
-Jaccard Similarity: 0.4024036884307861
+Cosine Similarity: 0.59255
+Jaccard Similarity: 0.40240
 
 Original Sentence: A bird sings in the tree.
 Transformed Sentence: airplane cry
-Cosine Similarity: 0.2876426577568054
-Jaccard Similarity: 0.46508150630527073
+Cosine Similarity: 0.28764
+Jaccard Similarity: 0.46508
 
 Original Sentence: The river flows slowly.
 Transformed Sentence: flowing flowing
-Cosine Similarity: 0.559188961982727
-Jaccard Similarity: 0.4612924712044852
+Cosine Similarity: 0.55919
+Jaccard Similarity: 0.46129
 
 Original Sentence: A girl opens the window.
 Transformed Sentence: boy discover
-Cosine Similarity: 0.1130133867263794
-Jaccard Similarity: 0.3765086568892002
+Cosine Similarity: 0.11301
+Jaccard Similarity: 0.37651
 
 Original Sentence: The cat hides under the chair.
 Transformed Sentence: pet disguise
-Cosine Similarity: 0.2623549699783325
-Jaccard Similarity: 0.4397766806862571
+Cosine Similarity: 0.26235
+Jaccard Similarity: 0.43978
 
 Original Sentence: A boy draws a circle.
 Transformed Sentence: boy pull
-Cosine Similarity: 0.46009397506713867
-Jaccard Similarity: 0.5497995615005493
+Cosine Similarity: 0.46009
+Jaccard Similarity: 0.54980
 
 Original Sentence: The shop sells fruit.
 Transformed Sentence: shop sale
-Cosine Similarity: 0.5038933157920837
-Jaccard Similarity: 0.43853124550410677
+Cosine Similarity: 0.50389
+Jaccard Similarity: 0.43853
 
 Original Sentence: A man reads the news.
 Transformed Sentence: man learn
-Cosine Similarity: 0.4879888892173767
-Jaccard Similarity: 0.5007950663566589
+Cosine Similarity: 0.48799
+Jaccard Similarity: 0.50080
 
 Original Sentence: The rain stops suddenly.
 Transformed Sentence: halt
-Cosine Similarity: 0.5687352418899536
-Jaccard Similarity: 0.4401222914457321
+Cosine Similarity: 0.56874
+Jaccard Similarity: 0.44012
 
 Original Sentence: A child kicks a stone.
 Transformed Sentence: boy pushing
-Cosine Similarity: 0.5502306222915649
-Jaccard Similarity: 0.5300877541303635
+Cosine Similarity: 0.55023
+Jaccard Similarity: 0.53009
 
 Original Sentence: The lamp lights the room.
 Transformed Sentence: fireplace fire
-Cosine Similarity: 0.5926315784454346
-Jaccard Similarity: 0.43671775609254837
+Cosine Similarity: 0.59263
+Jaccard Similarity: 0.43672
 
 Original Sentence: A dog sleeps on the rug.
 Transformed Sentence: pet bed
-Cosine Similarity: 0.6653844714164734
-Jaccard Similarity: 0.5356125771999359
+Cosine Similarity: 0.66538
+Jaccard Similarity: 0.53561
 
 Original Sentence: The wind cools the air.
 Transformed Sentence: airplane cooling
-Cosine Similarity: 0.478053480386734
-Jaccard Similarity: 0.5048355195257399
+Cosine Similarity: 0.47805
+Jaccard Similarity: 0.50484
 
 Original Sentence: A girl drinks warm tea.
 Transformed Sentence: boy liquor warmness
-Cosine Similarity: 0.33169329166412354
-Jaccard Similarity: 0.34330977201461793
+Cosine Similarity: 0.33169
+Jaccard Similarity: 0.34331
 
 Original Sentence: The boy counts the coins.
 Transformed Sentence: boy calculate
-Cosine Similarity: 0.5993898510932922
-Jaccard Similarity: 0.5920045301318169
+Cosine Similarity: 0.59939
+Jaccard Similarity: 0.59200
 
 Original Sentence: A bird pecks the ground.
 Transformed Sentence: airplane crimp
-Cosine Similarity: 0.2803982198238373
-Jaccard Similarity: 0.46478286385536194
+Cosine Similarity: 0.28040
+Jaccard Similarity: 0.46478
 
 Original Sentence: The car parks near the gate.
 Transformed Sentence: car grassland vicinity
-Cosine Similarity: 0.7058042287826538
-Jaccard Similarity: 0.4287421554327011
+Cosine Similarity: 0.70580
+Jaccard Similarity: 0.42874
 
 Original Sentence: A man climbs the stairs.
 Transformed Sentence: man rise
-Cosine Similarity: 0.708704948425293
-Jaccard Similarity: 0.5590895679261949
+Cosine Similarity: 0.70870
+Jaccard Similarity: 0.55909
 
 Original Sentence: The water boils in the pot.
 Transformed Sentence: watercolor fry
-Cosine Similarity: 0.4362407922744751
-Jaccard Similarity: 0.46866559982299805
+Cosine Similarity: 0.43624
+Jaccard Similarity: 0.46867
 
 Original Sentence: A child paints a house.
 Transformed Sentence: boy colorize
-Cosine Similarity: 0.45710670948028564
-Jaccard Similarity: 0.44057707654105294
+Cosine Similarity: 0.45711
+Jaccard Similarity: 0.44058
 
 Original Sentence: The dog runs after a stick.
 Transformed Sentence: pet running
-Cosine Similarity: 0.7201086282730103
-Jaccard Similarity: 0.5297194719314575
+Cosine Similarity: 0.72011
+Jaccard Similarity: 0.52972
 
 Original Sentence: A woman folds a shirt.
 Transformed Sentence: man wrapping
-Cosine Similarity: 0.4081704020500183
-Jaccard Similarity: 0.3824412114918232
+Cosine Similarity: 0.40817
+Jaccard Similarity: 0.38244
 
 Original Sentence: The sun lights the path.
 Transformed Sentence: dark fire
-Cosine Similarity: 0.22146907448768616
-Jaccard Similarity: 0.37053874507546425
+Cosine Similarity: 0.22147
+Jaccard Similarity: 0.37054
 
 Original Sentence: A boy opens a box.
 Transformed Sentence: boy discover
-Cosine Similarity: 0.6522352695465088
-Jaccard Similarity: 0.5127115175127983
+Cosine Similarity: 0.65224
+Jaccard Similarity: 0.51271
 
 Original Sentence: The tree grows by the road.
 Transformed Sentence: lumber rise
-Cosine Similarity: 0.4925258457660675
-Jaccard Similarity: 0.407627660036087
+Cosine Similarity: 0.49253
+Jaccard Similarity: 0.40763
 
 Original Sentence: A girl writes a note.
 Transformed Sentence: boy compose
-Cosine Similarity: 0.3513603210449219
-Jaccard Similarity: 0.44033700227737427
+Cosine Similarity: 0.35136
+Jaccard Similarity: 0.44034
 
 Original Sentence: The cat watches the bird.
 Transformed Sentence: pet time
-Cosine Similarity: 0.26109838485717773
-Jaccard Similarity: 0.4402620568871498
+Cosine Similarity: 0.26110
+Jaccard Similarity: 0.44026
 
 Original Sentence: A man carries wood.
 Transformed Sentence: man bring
-Cosine Similarity: 0.5805822610855103
-Jaccard Similarity: 0.5124682358333043
+Cosine Similarity: 0.58058
+Jaccard Similarity: 0.51247
 
 Original Sentence: The wind moves the clouds.
 Transformed Sentence: airplane walk
-Cosine Similarity: 0.4219827651977539
-Jaccard Similarity: 0.37830278649926186
+Cosine Similarity: 0.42198
+Jaccard Similarity: 0.37830
 
 Original Sentence: A child opens a gift.
 Transformed Sentence: boy discover
-Cosine Similarity: 0.586056113243103
-Jaccard Similarity: 0.48913997411727905
+Cosine Similarity: 0.58606
+Jaccard Similarity: 0.48914
 
 Original Sentence: The dog drinks milk.
 Transformed Sentence: pet liquor
-Cosine Similarity: 0.38328734040260315
-Jaccard Similarity: 0.4359121152332851
+Cosine Similarity: 0.38329
+Jaccard Similarity: 0.43591
 
 Original Sentence: A woman closes the book.
 Transformed Sentence: man end
-Cosine Similarity: 0.34939637780189514
-Jaccard Similarity: 0.3663468584418297
+Cosine Similarity: 0.34940
+Jaccard Similarity: 0.36635
 
 Original Sentence: The bell rings at noon.
 Transformed Sentence: call chain
-Cosine Similarity: 0.3405526578426361
-Jaccard Similarity: 0.4642271026968956
+Cosine Similarity: 0.34055
+Jaccard Similarity: 0.46423
 
 Original Sentence: A boy throws a stone.
 Transformed Sentence: boy throw
-Cosine Similarity: 0.7423173785209656
-Jaccard Similarity: 0.5877882987260818
+Cosine Similarity: 0.74232
+Jaccard Similarity: 0.58779
 
 Original Sentence: The river touches the sand.
 Transformed Sentence: flowing touch
-Cosine Similarity: 0.5315506458282471
-Jaccard Similarity: 0.44387268647551537
+Cosine Similarity: 0.53155
+Jaccard Similarity: 0.44387
 
 Original Sentence: A girl holds a flower.
 Transformed Sentence: boy seize
-Cosine Similarity: 0.1591552346944809
-Jaccard Similarity: 0.3975917845964432
+Cosine Similarity: 0.15916
+Jaccard Similarity: 0.39759
 
 Original Sentence: The door opens slowly.
 Transformed Sentence: entree discover
-Cosine Similarity: 0.3231889009475708
-Jaccard Similarity: 0.29883906670979093
+Cosine Similarity: 0.32319
+Jaccard Similarity: 0.29884
 
 Original Sentence: A man checks the map.
 Transformed Sentence: man examine
-Cosine Similarity: 0.6821824312210083
-Jaccard Similarity: 0.5298461839556694
+Cosine Similarity: 0.68218
+Jaccard Similarity: 0.52985
 
 Original Sentence: The dog waits patiently.
 Transformed Sentence: pet hope
-Cosine Similarity: 0.48416563868522644
-Jaccard Similarity: 0.47482755449083114
+Cosine Similarity: 0.48417
+Jaccard Similarity: 0.47483
 
 Original Sentence: The child draws a sun.
 Transformed Sentence: boy pull
-Cosine Similarity: 0.3362325429916382
-Jaccard Similarity: 0.5249509066343307
+Cosine Similarity: 0.33623
+Jaccard Similarity: 0.52495
 
 Original Sentence: The wind pushes the boat.
 Transformed Sentence: airplane pushing
-Cosine Similarity: 0.40462470054626465
-Jaccard Similarity: 0.5107497051358223
+Cosine Similarity: 0.40462
+Jaccard Similarity: 0.51075
 
 Original Sentence: A girl finds a shell.
 Transformed Sentence: boy discover
-Cosine Similarity: 0.252759724855423
-Jaccard Similarity: 0.48454535752534866
+Cosine Similarity: 0.25276
+Jaccard Similarity: 0.48455
 
 Original Sentence: That is a pretty young lady.
 Transformed Sentence: simple young
-Cosine Similarity: 0.6727540493011475
-Jaccard Similarity: 0.4470477170414395
+Cosine Similarity: 0.67275
+Jaccard Similarity: 0.44705
 
 Original Sentence: An apple is not a banana.
 Transformed Sentence: bottle
-Cosine Similarity: 0.33832523226737976
-Jaccard Similarity: 0.3602069243788719
+Cosine Similarity: 0.33833
+Jaccard Similarity: 0.36021
+
+Test Sentences: 100
 
 Cosine Similarity:
-Average: 0.47923585772514343
-Median: 0.4902573823928833
+Average: 0.47924
+Median: 0.49026
+Minimum: 0.02859
+Maximum: 0.76983
+90th Percentile: 0.70276
 
 Jaccard Similarity:
-Average: 0.45270596418201836
-Median: 0.4458364645640055
+Average: 0.45271
+Median: 0.44584
+Minimum: 0.29884
+Maximum: 0.59480
+90th Percentile: 0.53581

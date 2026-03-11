@@ -111,8 +111,8 @@ def build_word_embeddings(sentence):
 
 def similarity_checker(original_sentence, transformed_sentence):
     similarities = compare_sentences(original_sentence, transformed_sentence)
-    print(f"Cosine Similarity (Sentence-BERT): {similarities['cosine_similarity_sentences_BERT']}")
-    print(f"jaccard Similarity (Sentence-BERT): {similarities['jaccard_similarity_BERT']}")
+    print(f"Cosine Similarity (Sentence-BERT): {similarities['cosine_similarity_sentences_BERT']:.5f}")
+    print(f"jaccard Similarity (Sentence-BERT): {similarities['jaccard_similarity_BERT']:.5f}")
 
 def create_sentence(original_sentence, embbedings_path="vocab_embeddings_dict.pkl"):
     # vocab_embeddings = build_vocab_embeddings(curr_vocab)
@@ -142,3 +142,4 @@ if __name__ == "__main__":
     print("Original Sentence:", sentence)
     print("Transformed Sentence:", transformed_sentence)
     similarity_checker(sentence, transformed_sentence)
+
