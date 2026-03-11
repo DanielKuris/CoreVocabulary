@@ -14,6 +14,13 @@ TOKEN_PATTERN = re.compile(r"[A-Za-z]+")
 EMBEDDING_CACHE = {}
 
 
+METRIC_LABELS = {
+    "cosine_similarity_sentences_BERT": "Cosine Similarity",
+    "jaccard_similarity": "Jaccard Similarity",
+    "semantic_token_overlap": "Semantic Token Overlap",
+}
+
+
 def sentence_bert_embedding(sentence):
     """
     Return a sentence embedding for sentence-level similarity.
@@ -94,16 +101,22 @@ def jaccard_similarity(sentence1, sentence2):
     return len(intersection) / len(union)
 
 
-def compare_sentences(sentence_a, sentence_b):
+def compare_sentences(sentence_a, sentence_b, metrics_config):
     """
-    Return cosine, Jaccard, and semantic-overlap scores for two sentences.
+    Return the enabled similarity scores for two sentences.
     """
 
-    emb_a = sentence_bert_embedding(sentence_a)
-    emb_b = sentence_bert_embedding(sentence_b)
+    scores = {}
 
-    return {
-        "cosine_similarity_sentences_BERT": cosine_similarity_sentences(emb_a, emb_b),
-        "jaccard_similarity": jaccard_similarity(sentence_a, sentence_b),
-        "semantic_token_overlap": semantic_token_overlap(sentence_a, sentence_b),
-    }
+    if metrics_config.get("cosine_similarity_sentences_BERT", False):
+        emb_a = sentence_bert_embedding(sentence_a)
+        emb_b = sentence_bert_embedding(sentence_b)
+        scores["cosine_similarity_sentences_BERT"] = cosine_similarity_sentences(emb_a, emb_b)
+
+    if metrics_config.get("jaccard_similarity", False):
+        scores["jaccard_similarity"] = jaccard_similarity(sentence_a, sentence_b)
+
+    if metrics_config.get("semantic_token_overlap", False):
+        scores["semantic_token_overlap"] = semantic_token_overlap(sentence_a, sentence_b)
+
+    return scores

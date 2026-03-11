@@ -15,12 +15,13 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 - `output_runtime.py`: prints runtime settings and run summaries.
 - `heuristics/nearest_word.py`: replaces each word with the nearest vocabulary word by cosine similarity.
 - `heuristics/local_context.py`: replaces each word using a weighted blend of the word embedding and a context vector from nearby words or the whole sentence.
-- `project_config.json`: project settings for vocabulary size, rewrite behavior, and heuristic selection.
+- `heuristics/top_k_local_context.py`: reranks the top-k nearest vocabulary candidates using local or sentence-level context.
+- `project_config.json`: project settings for vocabulary size, rewrite behavior, metric toggles, and heuristic selection.
 - `vocabularies/csv_vocab/`: CSV vocabularies from 100 to 2000 words.
 
 ## Config
 
-`project_config.json` supports general rewrite settings, vocabulary selection, and heuristic-specific settings.
+`project_config.json` supports general rewrite settings, vocabulary selection, metric toggles, and heuristic-specific settings.
 
 Example:
 
@@ -28,10 +29,16 @@ Example:
 {
   "vocabulary_size": 600,
   "stopword_mode": "vocab_only",
+  "metrics": {
+    "cosine_similarity_sentences_BERT": true,
+    "jaccard_similarity": true,
+    "semantic_token_overlap": true
+  },
   "heuristic": {
-    "name": "local_context",
+    "name": "top_k_local_context",
     "local_context_weight": 0.15,
-    "local_context_window": 3
+    "local_context_window": 3,
+    "top_k_candidates": 5
   }
 }
 ```
@@ -46,23 +53,42 @@ Example:
   - `preserve_original_stopwords`: keep stopwords from the original sentence even if they are not in the vocabulary
   - `vocab_only`: keep only words that are in the vocabulary, so stopwords outside the vocabulary are dropped
 
+### Metrics
+
+- `metrics.cosine_similarity_sentences_BERT`
+  - enables or disables sentence-level cosine similarity
+
+- `metrics.jaccard_similarity`
+  - enables or disables exact word-set Jaccard similarity
+
+- `metrics.semantic_token_overlap`
+  - enables or disables semantic token overlap
+
+At least one metric must be enabled.
+
 ### Heuristics
 
 - `heuristic.name`
   - `nearest_word`: compare each source word embedding directly to all vocabulary embeddings and choose the closest match
   - `local_context`: compare each source word using `(1 - local_context_weight) * word_vector + local_context_weight * context_vector`, where `context_vector` is built from context words around the current word
+  - `top_k_local_context`: take the top `k` nearest vocabulary words for the source word, then rerank only that shortlist using the context vector
 
 - `heuristic.local_context_weight`
-  - used by `local_context`
-  - controls the blend between the current word embedding and the context embedding
-  - `0` means use only the word embedding
-  - `1` means use only the context embedding
+  - used by `local_context` and `top_k_local_context`
+  - controls the blend between the current word embedding signal and the context signal
+  - `0` means use only the word similarity signal
+  - `1` means use only the context signal
 
 - `heuristic.local_context_window`
-  - used by `local_context`
+  - used by `local_context` and `top_k_local_context`
   - controls how many words before and after the current word are included in the context
   - for example: `3` means up to three words before and three words after
   - `-1` means use the whole sentence as context
+
+- `heuristic.top_k_candidates`
+  - used by `top_k_local_context`
+  - controls how many nearest vocabulary candidates are shortlisted before reranking
+  - for example: `5` means rerank the five nearest vocabulary words
 
 ## Metrics
 

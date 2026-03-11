@@ -5,10 +5,10 @@ Jaccard Similarity: 0.14286
 Semantic Token Overlap: 0.52521
 
 Original Sentence:  A boy opens the red door.
-Transformed Sentence: man uncover red door
-Cosine Similarity: 0.84253
-Jaccard Similarity: 0.25000
-Semantic Token Overlap: 0.51825
+Transformed Sentence: man door red door
+Cosine Similarity: 0.83569
+Jaccard Similarity: 0.28571
+Semantic Token Overlap: 0.47607
 
 Original Sentence:  The sun warms the quiet street.
 Transformed Sentence: day warmer hush walkway
@@ -173,10 +173,10 @@ Jaccard Similarity: 0.14286
 Semantic Token Overlap: 0.55623
 
 Original Sentence: A man opens the gate.
-Transformed Sentence: man uncover door
-Cosine Similarity: 0.74003
-Jaccard Similarity: 0.14286
-Semantic Token Overlap: 0.54206
+Transformed Sentence: man door door
+Cosine Similarity: 0.74640
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.48389
 
 Original Sentence: The moon rises above the trees.
 Transformed Sentence: meteor rising wood
@@ -551,10 +551,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.41814
 
 Original Sentence: The door opens slowly.
-Transformed Sentence: door uncover slow
-Cosine Similarity: 0.78306
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.49064
+Transformed Sentence: door door slow
+Cosine Similarity: 0.78503
+Jaccard Similarity: 0.20000
+Semantic Token Overlap: 0.44753
 
 Original Sentence: A man checks the map.
 Transformed Sentence: man examination map
@@ -581,10 +581,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.44488
 
 Original Sentence: A girl finds a shell.
-Transformed Sentence: dame finding peel
-Cosine Similarity: 0.59525
+Transformed Sentence: dame finding rind
+Cosine Similarity: 0.63466
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.47259
+Semantic Token Overlap: 0.45532
 
 Original Sentence: That is a pretty young lady.
 Transformed Sentence: goody youth dame
@@ -601,22 +601,22 @@ Semantic Token Overlap: 0.39558
 Test Sentences: 100
 
 Cosine Similarity:
-Average: 0.67996
+Average: 0.68037
 Median: 0.70461
 Minimum: 0.26705
 Maximum: 0.96981
 90th Percentile: 0.86269
 
 Jaccard Similarity:
-Average: 0.06669
+Average: 0.06762
 Median: 0.00000
 Minimum: 0.00000
 Maximum: 0.40000
 90th Percentile: 0.16667
 
 Semantic Token Overlap:
-Average: 0.47005
-Median: 0.47461
+Average: 0.46844
+Median: 0.47436
 Minimum: 0.34318
 Maximum: 0.59063
-90th Percentile: 0.53722
+90th Percentile: 0.53618

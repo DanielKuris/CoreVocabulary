@@ -1,6 +1,11 @@
 from pathlib import Path
 
-from config_runtime import get_heuristic_config, get_stopword_mode, get_vocabulary_size
+from config_runtime import (
+    get_heuristic_config,
+    get_metrics_config,
+    get_stopword_mode,
+    get_vocabulary_size,
+)
 from heuristics import get_heuristic_builder
 from output_runtime import print_run_summary, print_settings
 from results_runtime import summarize_similarity_results, write_similarity_results
@@ -19,6 +24,7 @@ DEFAULT_OUTPUT_PATH = Path("SimilarityTests/TestResults.txt")
 MODEL, TOKENIZER = load_replacement_model()
 HEURISTIC_CONFIG = get_heuristic_config()
 HEURISTIC_NAME = HEURISTIC_CONFIG["name"]
+METRICS_CONFIG = get_metrics_config()
 STOPWORD_MODE = get_stopword_mode()
 VOCABULARY_SIZE = get_vocabulary_size()
 VOCABULARY = load_vocabulary(VOCABULARY_SIZE)
@@ -88,10 +94,10 @@ def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OU
         transformed = rewrite_sentence(sentence)
         results[sentence] = {
             "transformed": transformed,
-            "similarities": compare_sentences(sentence, transformed),
+            "similarities": compare_sentences(sentence, transformed, METRICS_CONFIG),
         }
 
-    write_similarity_results(results, output_path)
+    write_similarity_results(results, METRICS_CONFIG, output_path)
     return results
 
 
@@ -101,9 +107,9 @@ def main():
     """
 
     print(f"Processing sentences from {DEFAULT_INPUT_PATH} ...")
-    print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG, VOCABULARY_SIZE)
+    print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG, VOCABULARY_SIZE, METRICS_CONFIG)
     results = process_test_sentences()
-    print_run_summary(summarize_similarity_results(results))
+    print_run_summary(summarize_similarity_results(results, METRICS_CONFIG))
     print(f"Processing complete. Results written to {DEFAULT_OUTPUT_PATH}")
 
 
