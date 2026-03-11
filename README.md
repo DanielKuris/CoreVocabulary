@@ -6,10 +6,11 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 
 ## Files
 
-- `sentence_rewriter.py`: loads the vocabulary and embeddings, rewrites the test sentences, writes results, and prints summary statistics.
+- `sentence_rewriter.py`: loads the vocabulary and embeddings, rewrites the test sentences, and runs the batch workflow.
 - `similarity_metrics.py`: computes sentence-level cosine similarity, exact Jaccard similarity, and semantic token overlap.
 - `vocabulary_runtime.py`: loads vocabulary data and writes result summaries.
 - `config_runtime.py`: loads and validates project settings.
+- `output_runtime.py`: prints runtime settings and run summaries.
 - `heuristics/nearest_word.py`: replaces each word with the nearest vocabulary word by cosine similarity.
 - `heuristics/global_context.py`: replaces each word using its own embedding plus a weighted sentence-context vector.
 - `project_config.json`: project settings for the rewrite behavior and heuristic selection.

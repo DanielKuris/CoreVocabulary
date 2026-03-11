@@ -1,6 +1,8 @@
 from pathlib import Path
 
+from config_runtime import get_heuristic_config, get_stopword_mode
 from heuristics import get_heuristic_builder
+from output_runtime import print_run_summary, print_settings
 from similarity_metrics import compare_sentences
 from vocabulary_runtime import (
     embed_word,
@@ -12,7 +14,6 @@ from vocabulary_runtime import (
     summarize_similarity_results,
     write_similarity_results,
 )
-from config_runtime import get_heuristic_config, get_stopword_mode
 
 
 DEFAULT_INPUT_PATH = Path("SimilarityTests/TestSentences.txt")
@@ -84,28 +85,12 @@ def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OU
     return results
 
 
-def print_run_summary(results):
-    """Print summary statistics for a batch run."""
-    summary = summarize_similarity_results(results)
-    print(f"Test sentences processed: {summary['sentence_count']}")
-    print(f"Stopword mode: {STOPWORD_MODE}")
-    print(f"Heuristic: {HEURISTIC_NAME}")
-    print(f"Average cosine similarity: {summary['cosine']['average']:.5f}")
-    print(f"Median cosine similarity: {summary['cosine']['median']:.5f}")
-    print(f"Cosine similarity 90th percentile: {summary['cosine']['p90']:.5f}")
-    print(f"Average Jaccard similarity: {summary['jaccard']['average']:.5f}")
-    print(f"Median Jaccard similarity: {summary['jaccard']['median']:.5f}")
-    print(f"Jaccard similarity 90th percentile: {summary['jaccard']['p90']:.5f}")
-    print(f"Average semantic token overlap: {summary['semantic_overlap']['average']:.5f}")
-    print(f"Median semantic token overlap: {summary['semantic_overlap']['median']:.5f}")
-    print(f"Semantic token overlap 90th percentile: {summary['semantic_overlap']['p90']:.5f}")
-
-
 def main():
     """Run the batch rewrite workflow for the test sentence file."""
     print(f"Processing sentences from {DEFAULT_INPUT_PATH} ...")
+    print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG)
     results = process_test_sentences()
-    print_run_summary(results)
+    print_run_summary(summarize_similarity_results(results))
     print(f"Processing complete. Results written to {DEFAULT_OUTPUT_PATH}")
 
 
