@@ -56,6 +56,17 @@ def find_out_of_vocabulary_words(sentence, vocabulary):
     return [word for word in sentence.split() if word not in vocabulary]
 
 
+def metric_summary(scores):
+    """Return common summary statistics for a score list."""
+    return {
+        "average": statistics.mean(scores),
+        "median": statistics.median(scores),
+        "minimum": min(scores),
+        "maximum": max(scores),
+        "p90": float(np.percentile(scores, 90)),
+    }
+
+
 def summarize_similarity_results(results):
     """Return aggregate statistics for a batch of similarity results."""
     cosine_scores = [
@@ -63,26 +74,19 @@ def summarize_similarity_results(results):
         for data in results.values()
     ]
     jaccard_scores = [
-        data["similarities"]["jaccard_similarity_BERT"]
+        data["similarities"]["jaccard_similarity"]
+        for data in results.values()
+    ]
+    semantic_overlap_scores = [
+        data["similarities"]["semantic_token_overlap"]
         for data in results.values()
     ]
 
     return {
         "sentence_count": len(results),
-        "cosine": {
-            "average": statistics.mean(cosine_scores),
-            "median": statistics.median(cosine_scores),
-            "minimum": min(cosine_scores),
-            "maximum": max(cosine_scores),
-            "p90": float(np.percentile(cosine_scores, 90)),
-        },
-        "jaccard": {
-            "average": statistics.mean(jaccard_scores),
-            "median": statistics.median(jaccard_scores),
-            "minimum": min(jaccard_scores),
-            "maximum": max(jaccard_scores),
-            "p90": float(np.percentile(jaccard_scores, 90)),
-        },
+        "cosine": metric_summary(cosine_scores),
+        "jaccard": metric_summary(jaccard_scores),
+        "semantic_overlap": metric_summary(semantic_overlap_scores),
     }
 
 
@@ -94,12 +98,14 @@ def write_similarity_results(results, output_file=DEFAULT_RESULTS_PATH):
         for original, data in results.items():
             transformed = data["transformed"]
             cosine = data["similarities"]["cosine_similarity_sentences_BERT"]
-            jaccard = data["similarities"]["jaccard_similarity_BERT"]
+            jaccard = data["similarities"]["jaccard_similarity"]
+            semantic_overlap = data["similarities"]["semantic_token_overlap"]
 
             file.write(f"Original Sentence: {original}\n")
             file.write(f"Transformed Sentence: {transformed}\n")
             file.write(f"Cosine Similarity: {cosine:.5f}\n")
-            file.write(f"Jaccard Similarity: {jaccard:.5f}\n\n")
+            file.write(f"Jaccard Similarity: {jaccard:.5f}\n")
+            file.write(f"Semantic Token Overlap: {semantic_overlap:.5f}\n\n")
 
         file.write(f"Test Sentences: {summary['sentence_count']}\n\n")
 
@@ -115,4 +121,11 @@ def write_similarity_results(results, output_file=DEFAULT_RESULTS_PATH):
         file.write(f"Median: {summary['jaccard']['median']:.5f}\n")
         file.write(f"Minimum: {summary['jaccard']['minimum']:.5f}\n")
         file.write(f"Maximum: {summary['jaccard']['maximum']:.5f}\n")
-        file.write(f"90th Percentile: {summary['jaccard']['p90']:.5f}\n")
+        file.write(f"90th Percentile: {summary['jaccard']['p90']:.5f}\n\n")
+
+        file.write("Semantic Token Overlap:\n")
+        file.write(f"Average: {summary['semantic_overlap']['average']:.5f}\n")
+        file.write(f"Median: {summary['semantic_overlap']['median']:.5f}\n")
+        file.write(f"Minimum: {summary['semantic_overlap']['minimum']:.5f}\n")
+        file.write(f"Maximum: {summary['semantic_overlap']['maximum']:.5f}\n")
+        file.write(f"90th Percentile: {summary['semantic_overlap']['p90']:.5f}\n")

@@ -7,7 +7,6 @@ from similarity_metrics import compare_sentences
 from vocabulary_runtime import (
     embed_word,
     filter_replaceable_words,
-    find_out_of_vocabulary_words,
     load_replacement_model,
     load_vocab_embeddings,
     load_vocabulary,
@@ -34,10 +33,19 @@ def find_closest_vocabulary_word(word):
 
 
 def rewrite_sentence(sentence):
-    """Return replacement words for out-of-vocabulary tokens in a sentence."""
-    words_to_replace = find_out_of_vocabulary_words(sentence, VOCABULARY)
-    words_to_replace = filter_replaceable_words(words_to_replace)
-    return " ".join(find_closest_vocabulary_word(word) for word in words_to_replace)
+    """Return a sentence with out-of-vocabulary content words replaced."""
+    words = sentence.split()
+    replaceable_words = set(filter_replaceable_words(words))
+
+    rewritten_words = []
+    for word in words:
+        normalized_word = word.lower()
+        if normalized_word in VOCABULARY or normalized_word not in replaceable_words:
+            rewritten_words.append(word)
+        else:
+            rewritten_words.append(find_closest_vocabulary_word(normalized_word))
+
+    return " ".join(rewritten_words)
 
 
 def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
@@ -76,6 +84,9 @@ def print_run_summary(results):
     print(f"Average Jaccard similarity: {summary['jaccard']['average']:.5f}")
     print(f"Median Jaccard similarity: {summary['jaccard']['median']:.5f}")
     print(f"Jaccard similarity 90th percentile: {summary['jaccard']['p90']:.5f}")
+    print(f"Average semantic token overlap: {summary['semantic_overlap']['average']:.5f}")
+    print(f"Median semantic token overlap: {summary['semantic_overlap']['median']:.5f}")
+    print(f"Semantic token overlap 90th percentile: {summary['semantic_overlap']['p90']:.5f}")
 
 
 def main():
