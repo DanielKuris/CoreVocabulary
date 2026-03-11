@@ -26,17 +26,13 @@ def embed_word(word, model, tokenizer):
 
 
 def load_vocab_embeddings(path=DEFAULT_VOCAB_EMBEDDINGS_PATH):
-    """Load the precomputed allowed-vocabulary embeddings."""
+    """Load allowed-vocabulary embeddings from disk."""
     with open(path, "rb") as file:
         return pkl.load(file)
 
 
 def load_vocabulary(path=DEFAULT_VOCAB_PATH):
-    """Load the allowed vocabulary list from disk.
-
-    The current project stores the list as Python source, so this preserves the
-    existing parsing behavior.
-    """
+    """Load the allowed vocabulary list from disk."""
     with open(path, "r", encoding="utf-8") as file:
         return eval(file.read())
 
@@ -49,12 +45,12 @@ def load_replacement_model():
 
 
 def compare_original_and_transformed(original_sentence, transformed_sentence):
-    """Return the similarity scores used in the evaluation pipeline."""
+    """Return similarity scores for two sentences."""
     return compare_sentences(original_sentence, transformed_sentence)
 
 
 def filter_replaceable_words(words):
-    """Keep only alphabetic, non-stopword tokens and lowercase them."""
+    """Keep alphabetic, non-stopword tokens and lowercase them."""
     stop_words = set(stopwords.words("english"))
     return [
         word.lower()
@@ -64,12 +60,12 @@ def filter_replaceable_words(words):
 
 
 def find_out_of_vocabulary_words(sentence, vocabulary):
-    """Return the tokens that are not already part of the allowed vocabulary."""
+    """Return tokens that are not part of the allowed vocabulary."""
     return [word for word in sentence.split() if word not in vocabulary]
 
 
 def load_glove_vocab_embeddings(vocabulary, glove_file="glove.6B.100d.txt"):
-    """Return GloVe embeddings for the subset of words present in the model."""
+    """Return GloVe embeddings for vocabulary words present in the model."""
     model = KeyedVectors.load_word2vec_format(glove_file, binary=False, no_header=True)
     try:
         vocab_embeddings = {word: model[word] for word in vocabulary if word in model}

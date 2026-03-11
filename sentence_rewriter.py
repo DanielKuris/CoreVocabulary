@@ -34,11 +34,7 @@ def find_closest_vocabulary_word(word):
 
 
 def rewrite_sentence(sentence):
-    """Rewrite a sentence using the current replacement heuristic.
-
-    This preserves the current project behavior: the output contains only the
-    replacement words, not the untouched words from the original sentence.
-    """
+    """Return replacement words for out-of-vocabulary tokens in a sentence."""
     words_to_replace = find_out_of_vocabulary_words(sentence, VOCABULARY)
     words_to_replace = filter_replaceable_words(words_to_replace)
 
@@ -56,7 +52,7 @@ def rewrite_sentence(sentence):
 
 
 def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
-    """Read the batch-evaluation sentences from disk."""
+    """Read test sentences from disk."""
     sentences = []
     with open(input_path, "r", encoding="utf-8") as file:
         for line in file:
@@ -68,7 +64,7 @@ def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
 
 
 def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OUTPUT_PATH):
-    """Rewrite all test sentences and save similarity scores."""
+    """Rewrite test sentences and save similarity scores."""
     results = {}
     for sentence in load_test_sentences(input_path):
         transformed = rewrite_sentence(sentence)
@@ -83,7 +79,7 @@ def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OU
 
 
 def print_run_summary(results):
-    """Print a compact post-run summary for the batch evaluation."""
+    """Print summary statistics for a batch run."""
     summary = summarize_similarity_results(results)
     print(f"Test sentences processed: {summary['sentence_count']}")
     print(f"Average cosine similarity: {summary['cosine']['average']:.5f}")

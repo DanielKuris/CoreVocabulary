@@ -12,7 +12,7 @@ EMBEDDING_CACHE = {}
 
 
 def sentence_bert_embedding(sentence):
-    """Return a sentence embedding suitable for sentence-level similarity."""
+    """Return a sentence embedding for sentence-level similarity."""
     return SENTENCE_MODEL.encode(sentence).reshape(1, -1)
 
 
@@ -34,33 +34,38 @@ def word_bert_embeddings(sentence):
 
 
 def cached_word_embeddings(sentence):
-    """Memoize token embeddings to avoid recomputing them during batch scoring."""
+    """Cache token embeddings for a sentence."""
     if sentence not in EMBEDDING_CACHE:
         EMBEDDING_CACHE[sentence] = word_bert_embeddings(sentence)
     return EMBEDDING_CACHE[sentence]
 
 
 def jaccard_similarity_bert(sentence1, sentence2, threshold=0.7):
-    """Return the project's token-overlap proxy based on embedding similarity.
+    """Return a token-overlap score based on embedding similarity.
 
-    The threshold argument is preserved for compatibility even though the current
-    implementation does not use it.
+    For each token in sentence1, the function finds the best token-level match in
+    sentence2. Only matches at or above ``threshold`` contribute to the score.
     """
     words1, embeddings1 = cached_word_embeddings(sentence1)
     words2, embeddings2 = cached_word_embeddings(sentence2)
+
+    if len(words1) == 0 or len(words2) == 0:
+        return 0.0
 
     similarity_matrix = cosine_similarity(embeddings1, embeddings2)
 
     intersection_similarity = 0
     for row in similarity_matrix:
-        intersection_similarity += np.max(row)
+        best_match = np.max(row)
+        if best_match >= threshold:
+            intersection_similarity += best_match
 
     union_size = len(words1) + len(words2)
     return intersection_similarity / union_size
 
 
 def compare_sentences(sentence_a, sentence_b):
-    """Return the two similarity metrics used throughout the project."""
+    """Return cosine and token-overlap similarity scores for two sentences."""
     emb_a = sentence_bert_embedding(sentence_a)
     emb_b = sentence_bert_embedding(sentence_b)
 
