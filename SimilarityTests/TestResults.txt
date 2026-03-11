@@ -23,10 +23,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.41904
 
 Original Sentence:  A small bird flies over the lake.
-Transformed Sentence: young airplane jet
-Cosine Similarity: 0.58868
+Transformed Sentence: young pet jet
+Cosine Similarity: 0.49047
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42078
+Semantic Token Overlap: 0.41791
 
 Original Sentence:  The teacher writes on the board.
 Transformed Sentence: learn saying
@@ -173,10 +173,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.54112
 
 Original Sentence: A man opens the gate.
-Transformed Sentence: man discover
-Cosine Similarity: 0.62464
+Transformed Sentence: man happening
+Cosine Similarity: 0.60000
 Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.48889
+Semantic Token Overlap: 0.46420
 
 Original Sentence: The moon rises above the trees.
 Transformed Sentence: march rise
@@ -227,10 +227,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.42206
 
 Original Sentence: The leaves fall to the ground.
-Transformed Sentence: paper plunge
-Cosine Similarity: 0.53643
+Transformed Sentence: paper happen
+Cosine Similarity: 0.52409
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42608
+Semantic Token Overlap: 0.43942
 
 Original Sentence: A boy climbs the ladder.
 Transformed Sentence: boy rise
@@ -509,10 +509,10 @@ Jaccard Similarity: 0.00000
 Semantic Token Overlap: 0.38471
 
 Original Sentence: A child opens a gift.
-Transformed Sentence: boy discover
-Cosine Similarity: 0.58606
+Transformed Sentence: boy occur
+Cosine Similarity: 0.55395
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.48914
+Semantic Token Overlap: 0.47352
 
 Original Sentence: The dog drinks milk.
 Transformed Sentence: pet liquor
@@ -601,8 +601,8 @@ Semantic Token Overlap: 0.35720
 Test Sentences: 100
 
 Cosine Similarity:
-Average: 0.49115
-Median: 0.50604
+Average: 0.48948
+Median: 0.50101
 Minimum: 0.02859
 Maximum: 0.84807
 90th Percentile: 0.70985
@@ -615,7 +615,7 @@ Maximum: 0.20000
 90th Percentile: 0.20000
 
 Semantic Token Overlap:
-Average: 0.45223
+Average: 0.45193
 Median: 0.44443
 Minimum: 0.29884
 Maximum: 0.59480

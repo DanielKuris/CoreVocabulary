@@ -17,7 +17,7 @@ def build_replacer(words, runtime, config):
     model = runtime["model"]
     tokenizer = runtime["tokenizer"]
 
-    def replace_word(word):
+    def replace_word(word, index):
         word_vector = embed_word(word, model, tokenizer).reshape(-1)
         return closest_vocabulary_word(word_vector, vocab_embeddings)
 

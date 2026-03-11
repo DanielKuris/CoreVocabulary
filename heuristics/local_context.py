@@ -10,17 +10,22 @@ def closest_vocabulary_word(target_vector, vocab_embeddings):
     return list(vocab_embeddings.keys())[closest_index]
 
 
-def sentence_context_vector(words, runtime):
-    """Return the sum of word embeddings for alphabetic words in a sentence."""
+def local_context_vector(words, index, runtime, window_size):
+    """Return the sum of embeddings for nearby alphabetic words."""
     embed_word = runtime["embed_word"]
     model = runtime["model"]
     tokenizer = runtime["tokenizer"]
 
-    vectors = [
-        embed_word(word.lower(), model, tokenizer).reshape(-1)
-        for word in words
-        if isinstance(word, str) and word.isalpha()
-    ]
+    start = max(0, index - window_size)
+    end = min(len(words), index + window_size + 1)
+    vectors = []
+
+    for neighbor_index in range(start, end):
+        if neighbor_index == index:
+            continue
+        neighbor = words[neighbor_index]
+        if isinstance(neighbor, str) and neighbor.isalpha():
+            vectors.append(embed_word(neighbor.lower(), model, tokenizer).reshape(-1))
 
     if not vectors:
         sample_vector = embed_word("word", model, tokenizer).reshape(-1)
@@ -30,16 +35,17 @@ def sentence_context_vector(words, runtime):
 
 
 def build_replacer(words, runtime, config):
-    """Build a replacer that adds weighted sentence context to each word vector."""
+    """Build a replacer that adds weighted local context to each word vector."""
     vocab_embeddings = runtime["vocab_embeddings"]
     embed_word = runtime["embed_word"]
     model = runtime["model"]
     tokenizer = runtime["tokenizer"]
-    context_weight = float(config.get("global_context_weight", 0.0))
-    context_vector = sentence_context_vector(words, runtime)
+    context_weight = float(config.get("local_context_weight", 0.0))
+    window_size = int(config.get("local_context_window", 3))
 
     def replace_word(word, index):
         word_vector = embed_word(word, model, tokenizer).reshape(-1)
+        context_vector = local_context_vector(words, index, runtime, window_size)
         target_vector = word_vector + (context_weight * context_vector)
         return closest_vocabulary_word(target_vector, vocab_embeddings)
 

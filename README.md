@@ -13,6 +13,7 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 - `output_runtime.py`: prints runtime settings and run summaries.
 - `heuristics/nearest_word.py`: replaces each word with the nearest vocabulary word by cosine similarity.
 - `heuristics/global_context.py`: replaces each word using its own embedding plus a weighted sentence-context vector.
+- `heuristics/local_context.py`: replaces each word using its own embedding plus a weighted local-context vector from nearby words.
 - `project_config.json`: project settings for the rewrite behavior and heuristic selection.
 - `vocab_words_formatted.txt`: allowed vocabulary list.
 - `vocab_embeddings_dict.pkl`: embeddings for the allowed vocabulary.
@@ -28,8 +29,10 @@ Example:
 {
   "stopword_mode": "vocab_only",
   "heuristic": {
-    "name": "nearest_word",
-    "global_context_weight": 0.15
+    "name": "global_context",
+    "global_context_weight": 0.15,
+    "local_context_weight": 0.15,
+    "local_context_window": 3
   }
 }
 ```
@@ -45,10 +48,20 @@ Example:
 - `heuristic.name`
   - `nearest_word`: compare each source word embedding directly to all vocabulary embeddings and choose the closest match
   - `global_context`: add a weighted sentence-context vector to each source word embedding before comparing it to the vocabulary
+  - `local_context`: add a weighted local-context vector from nearby words before comparing the source word to the vocabulary
 
 - `heuristic.global_context_weight`
   - used by `global_context`
   - controls how much the summed sentence embedding vector affects each replacement choice
+
+- `heuristic.local_context_weight`
+  - used by `local_context`
+  - controls how much the nearby-word context vector affects each replacement choice
+
+- `heuristic.local_context_window`
+  - used by `local_context`
+  - controls how many words before and after the current word are included in the local context
+  - a value of `3` means up to three words before and three words after
 
 ## Metrics
 

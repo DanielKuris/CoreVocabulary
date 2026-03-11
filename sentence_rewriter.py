@@ -49,12 +49,12 @@ def rewrite_sentence(sentence):
     replace_word = get_heuristic_builder(HEURISTIC_NAME)(words, RUNTIME, HEURISTIC_CONFIG)
 
     rewritten_words = []
-    for word in words:
+    for index, word in enumerate(words):
         normalized_word = word.lower()
         if keep_original_word(word):
             rewritten_words.append(word)
         elif normalized_word in replaceable_words:
-            rewritten_words.append(replace_word(normalized_word))
+            rewritten_words.append(replace_word(normalized_word, index))
 
     return " ".join(rewritten_words)
 
