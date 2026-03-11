@@ -8,6 +8,7 @@ from config_runtime import (
 )
 from heuristics import get_heuristic_builder
 from output_runtime import print_run_summary, print_settings
+from pos_runtime import vocabulary_pos_groups
 from results_runtime import summarize_similarity_results, write_similarity_results
 from similarity_metrics import compare_sentences
 from text_runtime import is_replaceable_word, join_tokens, tokenize_sentence
@@ -29,11 +30,14 @@ STOPWORD_MODE = get_stopword_mode()
 VOCABULARY_SIZE = get_vocabulary_size()
 VOCABULARY = load_vocabulary(VOCABULARY_SIZE)
 VOCAB_EMBEDDINGS = build_vocab_embeddings(VOCABULARY, MODEL, TOKENIZER)
+VOCABULARY_POS_GROUPS = vocabulary_pos_groups(VOCABULARY)
 RUNTIME = {
     "embed_word": embed_word,
     "model": MODEL,
     "tokenizer": TOKENIZER,
     "vocab_embeddings": VOCAB_EMBEDDINGS,
+    "vocabulary": VOCABULARY,
+    "vocabulary_pos_groups": VOCABULARY_POS_GROUPS,
 }
 
 

@@ -7,7 +7,7 @@
     "semantic_token_overlap": true
   },
   "heuristic": {
-    "name": "top_k_local_context",
+    "name": "pos_aware",
     "local_context_weight": 0.15,
     "local_context_window": -1,
     "top_k_candidates": 5
