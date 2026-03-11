@@ -16,7 +16,10 @@ STOP_WORDS = set(stopwords.words("english"))
 
 
 def embed_word(word, model, tokenizer):
-    """Return a normalized embedding for a single word."""
+    """
+    Return a normalized embedding for a single word.
+    """
+
     input_ids = torch.tensor(tokenizer.encode(word)).unsqueeze(0)
     outputs = model(input_ids)
     embedding = outputs[1].detach().numpy()
@@ -24,36 +27,54 @@ def embed_word(word, model, tokenizer):
 
 
 def load_vocab_embeddings(path=DEFAULT_VOCAB_EMBEDDINGS_PATH):
-    """Load allowed-vocabulary embeddings from disk."""
+    """
+    Load allowed-vocabulary embeddings from disk.
+    """
+
     with open(path, "rb") as file:
         return pkl.load(file)
 
 
 def load_vocabulary(path=DEFAULT_VOCAB_PATH):
-    """Load the allowed vocabulary list from disk."""
+    """
+    Load the allowed vocabulary list from disk.
+    """
+
     with open(path, "r", encoding="utf-8") as file:
         return eval(file.read())
 
 
 def load_replacement_model():
-    """Load the word-level model used for nearest-vocabulary replacement."""
+    """
+    Load the word-level model used for nearest-vocabulary replacement.
+    """
+
     tokenizer = BertTokenizer.from_pretrained("setu4993/LaBSE")
     model = BertModel.from_pretrained("setu4993/LaBSE")
     return model, tokenizer
 
 
 def is_replaceable_word(word):
-    """Return whether a word should be replaced rather than kept as-is."""
+    """
+    Return whether a word should be replaced rather than kept as-is.
+    """
+
     return isinstance(word, str) and word.isalpha() and word.lower() not in STOP_WORDS
 
 
 def filter_replaceable_words(words):
-    """Keep alphabetic, non-stopword tokens and lowercase them."""
+    """
+    Keep alphabetic, non-stopword tokens and lowercase them.
+    """
+
     return [word.lower() for word in words if is_replaceable_word(word)]
 
 
 def metric_summary(scores):
-    """Return common summary statistics for a score list."""
+    """
+    Return common summary statistics for a score list.
+    """
+
     return {
         "average": statistics.mean(scores),
         "median": statistics.median(scores),
@@ -64,7 +85,10 @@ def metric_summary(scores):
 
 
 def summarize_similarity_results(results):
-    """Return aggregate statistics for a batch of similarity results."""
+    """
+    Return aggregate statistics for a batch of similarity results.
+    """
+
     cosine_scores = [
         data["similarities"]["cosine_similarity_sentences_BERT"]
         for data in results.values()
@@ -87,7 +111,10 @@ def summarize_similarity_results(results):
 
 
 def write_similarity_results(results, output_file=DEFAULT_RESULTS_PATH):
-    """Write per-sentence scores and aggregate statistics to disk."""
+    """
+    Write per-sentence scores and aggregate statistics to disk.
+    """
+
     summary = summarize_similarity_results(results)
 
     with open(output_file, "w", encoding="utf-8") as file:

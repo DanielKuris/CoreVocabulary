@@ -11,7 +11,10 @@ HEURISTIC_BUILDERS = {
 
 
 def get_heuristic_builder(name):
-    """Return the builder function for a configured heuristic."""
+    """
+    Return the builder function for a configured heuristic.
+    """
+
     if name not in HEURISTIC_BUILDERS:
         raise ValueError(f"Unsupported heuristic: {name}")
     return HEURISTIC_BUILDERS[name]

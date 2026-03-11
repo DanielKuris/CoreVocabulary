@@ -33,7 +33,10 @@ RUNTIME = {
 
 
 def keep_original_word(word):
-    """Return whether a word should stay unchanged in the rewritten sentence."""
+    """
+    Return whether a word should stay unchanged in the rewritten sentence.
+    """
+
     normalized_word = word.lower()
     if normalized_word in VOCABULARY:
         return True
@@ -43,7 +46,10 @@ def keep_original_word(word):
 
 
 def rewrite_sentence(sentence):
-    """Return a sentence with out-of-vocabulary content words replaced."""
+    """
+    Return a sentence with out-of-vocabulary content words replaced.
+    """
+
     words = sentence.split()
     replaceable_words = set(filter_replaceable_words(words))
     replace_word = get_heuristic_builder(HEURISTIC_NAME)(words, RUNTIME, HEURISTIC_CONFIG)
@@ -60,7 +66,10 @@ def rewrite_sentence(sentence):
 
 
 def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
-    """Read test sentences from disk."""
+    """
+    Read test sentences from disk.
+    """
+
     sentences = []
     with open(input_path, "r", encoding="utf-8") as file:
         for line in file:
@@ -72,7 +81,10 @@ def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
 
 
 def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OUTPUT_PATH):
-    """Rewrite test sentences and save similarity scores."""
+    """
+    Rewrite test sentences and save similarity scores.
+    """
+
     results = {}
     for sentence in load_test_sentences(input_path):
         transformed = rewrite_sentence(sentence)
@@ -86,7 +98,10 @@ def process_test_sentences(input_path=DEFAULT_INPUT_PATH, output_path=DEFAULT_OU
 
 
 def main():
-    """Run the batch rewrite workflow for the test sentence file."""
+    """
+    Run the batch rewrite workflow for the test sentence file.
+    """
+
     print(f"Processing sentences from {DEFAULT_INPUT_PATH} ...")
     print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG)
     results = process_test_sentences()

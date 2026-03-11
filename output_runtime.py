@@ -1,5 +1,8 @@
 def print_settings(stopword_mode, heuristic_name, heuristic_config):
-    """Print the active runtime settings."""
+    """
+    Print the active runtime settings.
+    """
+
     print(f"Stopword mode: {stopword_mode}")
     print(f"Heuristic: {heuristic_name}")
     for key, value in heuristic_config.items():
@@ -7,9 +10,11 @@ def print_settings(stopword_mode, heuristic_name, heuristic_config):
             print(f"Heuristic setting - {key}: {value}")
 
 
-
 def print_run_summary(summary):
-    """Print summary statistics for a batch run."""
+    """
+    Print summary statistics for a batch run.
+    """
+
     print(f"Test sentences processed: {summary['sentence_count']}")
     print(
         "Cosine similarity (average / median / p90): "

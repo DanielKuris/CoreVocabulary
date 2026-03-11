@@ -15,22 +15,34 @@ EMBEDDING_CACHE = {}
 
 
 def sentence_bert_embedding(sentence):
-    """Return a sentence embedding for sentence-level similarity."""
+    """
+    Return a sentence embedding for sentence-level similarity.
+    """
+
     return SENTENCE_MODEL.encode(sentence).reshape(1, -1)
 
 
 def cosine_similarity_sentences(vec1, vec2):
-    """Return cosine similarity for two sentence embeddings."""
+    """
+    Return cosine similarity for two sentence embeddings.
+    """
+
     return cosine_similarity(vec1, vec2)[0][0]
 
 
 def normalized_word_set(sentence):
-    """Return lowercase alphabetic words as a set."""
+    """
+    Return lowercase alphabetic words as a set.
+    """
+
     return {match.group(0).lower() for match in TOKEN_PATTERN.finditer(sentence)}
 
 
 def word_embeddings(sentence):
-    """Return token strings and token embeddings for a sentence."""
+    """
+    Return token strings and token embeddings for a sentence.
+    """
+
     inputs = WORD_TOKENIZER(sentence, return_tensors="pt", padding=True, truncation=True)
     with torch.no_grad():
         outputs = WORD_MODEL(**inputs)
@@ -41,14 +53,20 @@ def word_embeddings(sentence):
 
 
 def cached_word_embeddings(sentence):
-    """Cache token embeddings for a sentence."""
+    """
+    Cache token embeddings for a sentence.
+    """
+
     if sentence not in EMBEDDING_CACHE:
         EMBEDDING_CACHE[sentence] = word_embeddings(sentence)
     return EMBEDDING_CACHE[sentence]
 
 
 def semantic_token_overlap(sentence1, sentence2):
-    """Return average best-match token similarity across two sentences."""
+    """
+    Return average best-match token similarity across two sentences.
+    """
+
     words1, embeddings1 = cached_word_embeddings(sentence1)
     words2, embeddings2 = cached_word_embeddings(sentence2)
 
@@ -61,7 +79,10 @@ def semantic_token_overlap(sentence1, sentence2):
 
 
 def jaccard_similarity(sentence1, sentence2):
-    """Return Jaccard similarity for the word sets of two sentences."""
+    """
+    Return Jaccard similarity for the word sets of two sentences.
+    """
+
     words1 = normalized_word_set(sentence1)
     words2 = normalized_word_set(sentence2)
 
@@ -74,7 +95,10 @@ def jaccard_similarity(sentence1, sentence2):
 
 
 def compare_sentences(sentence_a, sentence_b):
-    """Return cosine, Jaccard, and semantic-overlap scores for two sentences."""
+    """
+    Return cosine, Jaccard, and semantic-overlap scores for two sentences.
+    """
+
     emb_a = sentence_bert_embedding(sentence_a)
     emb_b = sentence_bert_embedding(sentence_b)
 
