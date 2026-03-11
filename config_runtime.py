@@ -5,9 +5,13 @@ import json
 DEFAULT_CONFIG_PATH = Path("project_config.json")
 DEFAULT_STOPWORD_MODE = "preserve_original_stopwords"
 DEFAULT_HEURISTIC_NAME = "nearest_word"
+DEFAULT_VOCABULARY_SIZE = 600
 VALID_STOPWORD_MODES = {
     "preserve_original_stopwords",
     "vocab_only",
+}
+WEIGHT_KEYS = {
+    "local_context_weight",
 }
 
 
@@ -18,6 +22,43 @@ def load_project_config(path=DEFAULT_CONFIG_PATH):
 
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+def validate_weight(weight_name, value):
+    """
+    Validate that a heuristic weight is between 0 and 1.
+    """
+
+    numeric_value = float(value)
+    if not 0.0 <= numeric_value <= 1.0:
+        raise ValueError(f"{weight_name} must be between 0 and 1, got {value}")
+    return numeric_value
+
+
+def validate_vocabulary_size(value):
+    """
+    Validate that the configured vocabulary size matches an available CSV vocabulary.
+    """
+
+    vocabulary_size = int(value)
+    if vocabulary_size < 100 or vocabulary_size > 2000 or vocabulary_size % 100 != 0:
+        raise ValueError(
+            f"vocabulary_size must be between 100 and 2000 in steps of 100, got {value}"
+        )
+    return vocabulary_size
+
+
+def validate_local_context_window(value):
+    """
+    Validate that the local context window is -1 or a non-negative integer.
+    """
+
+    window_size = int(value)
+    if window_size < -1:
+        raise ValueError(
+            f"local_context_window must be -1 or a non-negative integer, got {value}"
+        )
+    return window_size
 
 
 def get_stopword_mode(path=DEFAULT_CONFIG_PATH):
@@ -32,6 +73,16 @@ def get_stopword_mode(path=DEFAULT_CONFIG_PATH):
     return stopword_mode
 
 
+def get_vocabulary_size(path=DEFAULT_CONFIG_PATH):
+    """
+    Return the configured vocabulary size.
+    """
+
+    config = load_project_config(path)
+    vocabulary_size = config.get("vocabulary_size", DEFAULT_VOCABULARY_SIZE)
+    return validate_vocabulary_size(vocabulary_size)
+
+
 def get_heuristic_config(path=DEFAULT_CONFIG_PATH):
     """
     Return the configured heuristic settings.
@@ -41,4 +92,14 @@ def get_heuristic_config(path=DEFAULT_CONFIG_PATH):
     heuristic_config = config.get("heuristic", {})
     if "name" not in heuristic_config:
         heuristic_config["name"] = DEFAULT_HEURISTIC_NAME
+
+    for key in WEIGHT_KEYS:
+        if key in heuristic_config:
+            heuristic_config[key] = validate_weight(key, heuristic_config[key])
+
+    if "local_context_window" in heuristic_config:
+        heuristic_config["local_context_window"] = validate_local_context_window(
+            heuristic_config["local_context_window"]
+        )
+
     return heuristic_config

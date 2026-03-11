@@ -6,31 +6,30 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 
 ## Files
 
-- `sentence_rewriter.py`: loads the vocabulary and embeddings, rewrites the test sentences, and runs the batch workflow.
+- `sentence_rewriter.py`: loads the configured CSV vocabulary, rewrites the test sentences, and runs the batch workflow.
 - `similarity_metrics.py`: computes sentence-level cosine similarity, exact Jaccard similarity, and semantic token overlap.
-- `vocabulary_runtime.py`: loads vocabulary data and writes result summaries.
+- `vocabulary_runtime.py`: loads vocabulary data from `vocabularies/csv_vocab` and builds LaBSE vocabulary embeddings at startup.
+- `text_runtime.py`: tokenizes sentences, rejoins tokens, and decides which words are replaceable.
+- `results_runtime.py`: summarizes similarity scores and writes the batch output file.
 - `config_runtime.py`: loads and validates project settings.
 - `output_runtime.py`: prints runtime settings and run summaries.
 - `heuristics/nearest_word.py`: replaces each word with the nearest vocabulary word by cosine similarity.
-- `heuristics/global_context.py`: replaces each word using its own embedding plus a weighted sentence-context vector.
-- `heuristics/local_context.py`: replaces each word using its own embedding plus a weighted local-context vector from nearby words.
-- `project_config.json`: project settings for the rewrite behavior and heuristic selection.
-- `vocab_words_formatted.txt`: allowed vocabulary list.
-- `vocab_embeddings_dict.pkl`: embeddings for the allowed vocabulary.
-- `vocab600.csv`: saved vocabulary file.
+- `heuristics/local_context.py`: replaces each word using a weighted blend of the word embedding and a context vector from nearby words or the whole sentence.
+- `project_config.json`: project settings for vocabulary size, rewrite behavior, and heuristic selection.
+- `vocabularies/csv_vocab/`: CSV vocabularies from 100 to 2000 words.
 
 ## Config
 
-`project_config.json` supports both general rewrite settings and heuristic-specific settings.
+`project_config.json` supports general rewrite settings, vocabulary selection, and heuristic-specific settings.
 
 Example:
 
 ```json
 {
+  "vocabulary_size": 600,
   "stopword_mode": "vocab_only",
   "heuristic": {
-    "name": "global_context",
-    "global_context_weight": 0.15,
+    "name": "local_context",
     "local_context_weight": 0.15,
     "local_context_window": 3
   }
@@ -38,6 +37,10 @@ Example:
 ```
 
 ### General settings
+
+- `vocabulary_size`
+  - selects `vocabularies/csv_vocab/vocab{size}.csv`
+  - valid values are `100` through `2000` in steps of `100`
 
 - `stopword_mode`
   - `preserve_original_stopwords`: keep stopwords from the original sentence even if they are not in the vocabulary
@@ -47,21 +50,19 @@ Example:
 
 - `heuristic.name`
   - `nearest_word`: compare each source word embedding directly to all vocabulary embeddings and choose the closest match
-  - `global_context`: add a weighted sentence-context vector to each source word embedding before comparing it to the vocabulary
-  - `local_context`: add a weighted local-context vector from nearby words before comparing the source word to the vocabulary
-
-- `heuristic.global_context_weight`
-  - used by `global_context`
-  - controls how much the summed sentence embedding vector affects each replacement choice
+  - `local_context`: compare each source word using `(1 - local_context_weight) * word_vector + local_context_weight * context_vector`, where `context_vector` is built from context words around the current word
 
 - `heuristic.local_context_weight`
   - used by `local_context`
-  - controls how much the nearby-word context vector affects each replacement choice
+  - controls the blend between the current word embedding and the context embedding
+  - `0` means use only the word embedding
+  - `1` means use only the context embedding
 
 - `heuristic.local_context_window`
   - used by `local_context`
-  - controls how many words before and after the current word are included in the local context
-  - a value of `3` means up to three words before and three words after
+  - controls how many words before and after the current word are included in the context
+  - for example: `3` means up to three words before and three words after
+  - `-1` means use the whole sentence as context
 
 ## Metrics
 
@@ -69,10 +70,19 @@ Example:
 - `Jaccard Similarity`: computes exact word overlap after lowercasing and keeping alphabetic words only. It is the size of the word-set intersection divided by the size of the word-set union.
 - `Semantic Token Overlap`: compares token embeddings between the two sentences. For each token in the original sentence, it finds the most similar token in the rewritten sentence, sums those best-match similarities, and divides by the total number of tokens across both sentences. This is useful when the rewritten sentence uses different words that are still semantically close.
 
+## Embeddings
+
+Both sides of the replacement lookup use `setu4993/LaBSE`.
+
+- The vocabulary words are read from `vocabularies/csv_vocab/vocab{size}.csv`.
+- At the start of the run, every vocabulary word is embedded with LaBSE.
+- During rewriting, each replaceable source word is also embedded with LaBSE.
+- Replacement is done by comparing those LaBSE vectors directly.
+
 ## Run
 
 ```bash
 python sentence_rewriter.py
 ```
 
-The script reads test sentences from `SimilarityTests/TestSentences.txt`, rewrites them using the provided vocabulary and the current config settings, compares the rewritten sentences to the originals, and writes the results to `SimilarityTests/TestResults.txt`.
+The script reads test sentences from `SimilarityTests/TestSentences.txt`, rewrites them using the configured CSV vocabulary and the current config settings, compares the rewritten sentences to the originals, and writes the results to `SimilarityTests/TestResults.txt`.

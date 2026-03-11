@@ -1,9 +1,9 @@
 {
+  "vocabulary_size": 2000,
   "stopword_mode": "vocab_only",
   "heuristic": {
     "name": "local_context",
-    "global_context_weight": 0.15,
     "local_context_weight": 0.15,
-    "local_context_window": 3
+    "local_context_window": -1
   }
 }

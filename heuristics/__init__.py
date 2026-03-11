@@ -1,11 +1,9 @@
-from heuristics.global_context import build_replacer as build_global_context_replacer
 from heuristics.local_context import build_replacer as build_local_context_replacer
 from heuristics.nearest_word import build_replacer as build_nearest_word_replacer
 
 
 HEURISTIC_BUILDERS = {
     "nearest_word": build_nearest_word_replacer,
-    "global_context": build_global_context_replacer,
     "local_context": build_local_context_replacer,
 }
 

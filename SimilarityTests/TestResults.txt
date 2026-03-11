@@ -1,622 +1,622 @@
 Original Sentence:  The cat sits on the wall.
-Transformed Sentence: pet being
-Cosine Similarity: 0.21333
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40399
+Transformed Sentence: pet sit wall
+Cosine Similarity: 0.54733
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.52521
 
 Original Sentence:  A boy opens the red door.
-Transformed Sentence: boy discover color
-Cosine Similarity: 0.46920
-Jaccard Similarity: 0.12500
-Semantic Token Overlap: 0.42292
+Transformed Sentence: man uncover red door
+Cosine Similarity: 0.84253
+Jaccard Similarity: 0.25000
+Semantic Token Overlap: 0.51825
 
 Original Sentence:  The sun warms the quiet street.
-Transformed Sentence: dark warmness quiet
-Cosine Similarity: 0.66196
-Jaccard Similarity: 0.14286
-Semantic Token Overlap: 0.43045
+Transformed Sentence: day warmer hush walkway
+Cosine Similarity: 0.78895
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.41068
 
 Original Sentence:  She drinks water from a glass.
-Transformed Sentence: liquor flowing
-Cosine Similarity: 0.48356
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41904
+Transformed Sentence: drink liquid glass
+Cosine Similarity: 0.77240
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.49592
 
 Original Sentence:  A small bird flies over the lake.
-Transformed Sentence: young pet jet
-Cosine Similarity: 0.49047
+Transformed Sentence: bit hen fly pond
+Cosine Similarity: 0.42365
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41791
+Semantic Token Overlap: 0.45601
 
 Original Sentence:  The teacher writes on the board.
-Transformed Sentence: learn saying
-Cosine Similarity: 0.58013
+Transformed Sentence: instructor writing table
+Cosine Similarity: 0.83529
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.35097
+Semantic Token Overlap: 0.54811
 
 Original Sentence:  A dog runs across the field.
-Transformed Sentence: pet running pass
-Cosine Similarity: 0.58507
+Transformed Sentence: pet going elapse territory
+Cosine Similarity: 0.41450
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.49673
+Semantic Token Overlap: 0.42905
 
 Original Sentence:  The old clock ticks slowly.
-Transformed Sentence: past time touch
-Cosine Similarity: 0.41182
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41407
+Transformed Sentence: yesteryear clock whiskers slow
+Cosine Similarity: 0.80677
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.41784
 
 Original Sentence:  He buys bread at the shop.
-Transformed Sentence: purchasing food
-Cosine Similarity: 0.60952
+Transformed Sentence: purchasing pie store
+Cosine Similarity: 0.71856
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.45113
+Semantic Token Overlap: 0.49221
 
 Original Sentence: The wind moves the tall trees.
-Transformed Sentence: jet turning rise
-Cosine Similarity: 0.46379
+Transformed Sentence: air move steep wood
+Cosine Similarity: 0.74333
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.35468
+Semantic Token Overlap: 0.47754
 
 Original Sentence: A girl reads a blue book.
-Transformed Sentence: boy learn dark
-Cosine Similarity: 0.23827
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.36149
+Transformed Sentence: dame read blue book
+Cosine Similarity: 0.90326
+Jaccard Similarity: 0.28571
+Semantic Token Overlap: 0.50388
 
 Original Sentence: The bus stops near the park.
-Transformed Sentence: car halt vicinity
-Cosine Similarity: 0.48015
+Transformed Sentence: car stoppage close paseo
+Cosine Similarity: 0.45380
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.38763
+Semantic Token Overlap: 0.36495
 
 Original Sentence: A man fixes the broken chair.
-Transformed Sentence: man adjust break
-Cosine Similarity: 0.39915
-Jaccard Similarity: 0.12500
-Semantic Token Overlap: 0.49947
+Transformed Sentence: man redress breaking sit
+Cosine Similarity: 0.59097
+Jaccard Similarity: 0.11111
+Semantic Token Overlap: 0.48122
 
 Original Sentence: The child draws a green star.
-Transformed Sentence: boy pull grassland
-Cosine Similarity: 0.31854
+Transformed Sentence: offspring pulling blue cast
+Cosine Similarity: 0.33099
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42123
+Semantic Token Overlap: 0.40408
 
 Original Sentence: The phone rings in the room.
-Transformed Sentence: phone round
-Cosine Similarity: 0.56968
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.53170
+Transformed Sentence: telephony clutches rum
+Cosine Similarity: 0.52104
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.37800
 
 Original Sentence: A farmer walks through the corn.
-Transformed Sentence: laborer walk
-Cosine Similarity: 0.60331
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.47745
+Transformed Sentence: farmer walking cornucopia
+Cosine Similarity: 0.83607
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.50039
 
 Original Sentence: The rain taps on the window.
-Transformed Sentence: rain get
-Cosine Similarity: 0.68565
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.48527
+Transformed Sentence: rainfall piping window
+Cosine Similarity: 0.78583
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.51078
 
 Original Sentence: A cook cuts fresh carrots.
-Transformed Sentence: cook cut young
-Cosine Similarity: 0.48569
-Jaccard Similarity: 0.14286
-Semantic Token Overlap: 0.48291
+Transformed Sentence: fry incision cool sausage
+Cosine Similarity: 0.59367
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.34318
 
 Original Sentence: The light shines on the table.
-Transformed Sentence: fire flowing
-Cosine Similarity: 0.42078
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.36216
+Transformed Sentence: illumination glow table
+Cosine Similarity: 0.86267
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.48271
 
 Original Sentence: A train passes the small town.
-Transformed Sentence: train pass young
-Cosine Similarity: 0.68596
-Jaccard Similarity: 0.12500
-Semantic Token Overlap: 0.48253
+Transformed Sentence: ride pass bit municipality
+Cosine Similarity: 0.26705
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.38366
 
 Original Sentence: The boy kicks the ball.
-Transformed Sentence: boy pushing
-Cosine Similarity: 0.67638
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.57128
+Transformed Sentence: man kick ball
+Cosine Similarity: 0.89527
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.53044
 
 Original Sentence: A woman plants a flower.
-Transformed Sentence: man factory
-Cosine Similarity: 0.02859
+Transformed Sentence: dame plant blossom
+Cosine Similarity: 0.72117
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.35059
+Semantic Token Overlap: 0.45957
 
 Original Sentence: The road turns near the hill.
-Transformed Sentence: road turning vicinity
-Cosine Similarity: 0.76983
-Jaccard Similarity: 0.14286
-Semantic Token Overlap: 0.46673
+Transformed Sentence: route turn close hill
+Cosine Similarity: 0.81658
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.51026
 
 Original Sentence: A fish swims under the boat.
-Transformed Sentence: vessel plunge
-Cosine Similarity: 0.56215
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.49295
+Transformed Sentence: fish plunge watercraft
+Cosine Similarity: 0.84701
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.47213
 
 Original Sentence: The baby laughs loudly.
-Transformed Sentence: boy humour
-Cosine Similarity: 0.58715
+Transformed Sentence: bit humour yell
+Cosine Similarity: 0.64931
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41684
+Semantic Token Overlap: 0.36502
 
 Original Sentence: A student closes the laptop.
-Transformed Sentence: learn end
-Cosine Similarity: 0.52621
+Transformed Sentence: disciple close printer
+Cosine Similarity: 0.43585
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40809
+Semantic Token Overlap: 0.45587
 
 Original Sentence: The fire burns in the stove.
-Transformed Sentence: fire fire
-Cosine Similarity: 0.65141
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.57218
+Transformed Sentence: fire burning fire
+Cosine Similarity: 0.69775
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.55534
 
 Original Sentence: A painter mixes bright colors.
-Transformed Sentence: watercolour mixture dark
-Cosine Similarity: 0.36262
+Transformed Sentence: writer blend glow color
+Cosine Similarity: 0.66321
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.37768
+Semantic Token Overlap: 0.44888
 
 Original Sentence: The horse drinks from the river.
-Transformed Sentence: cow liquor
-Cosine Similarity: 0.38370
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.54112
+Transformed Sentence: horse drink flow
+Cosine Similarity: 0.65743
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.55623
 
 Original Sentence: A man opens the gate.
-Transformed Sentence: man happening
-Cosine Similarity: 0.60000
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.46420
+Transformed Sentence: man uncover door
+Cosine Similarity: 0.74003
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.54206
 
 Original Sentence: The moon rises above the trees.
-Transformed Sentence: march rise
-Cosine Similarity: 0.34546
+Transformed Sentence: meteor rising wood
+Cosine Similarity: 0.67718
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.47074
+Semantic Token Overlap: 0.49880
 
 Original Sentence: A girl ties her shoes.
-Transformed Sentence: boy link
-Cosine Similarity: 0.07710
+Transformed Sentence: dame relate leg
+Cosine Similarity: 0.56390
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.38739
+Semantic Token Overlap: 0.40276
 
 Original Sentence: The dog waits by the door.
-Transformed Sentence: pet looking
-Cosine Similarity: 0.52578
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.45857
+Transformed Sentence: pet await door
+Cosine Similarity: 0.75267
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.51481
 
 Original Sentence: A child builds a sand tower.
-Transformed Sentence: boy build road
-Cosine Similarity: 0.51319
+Transformed Sentence: offspring build soil wall
+Cosine Similarity: 0.58681
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.49794
+Semantic Token Overlap: 0.43839
 
 Original Sentence: The wind lifts the kite.
-Transformed Sentence: jet rise
-Cosine Similarity: 0.57846
+Transformed Sentence: air elevate fly
+Cosine Similarity: 0.70897
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.51064
+Semantic Token Overlap: 0.48640
 
 Original Sentence: A baker sells warm bread.
-Transformed Sentence: cook sale warmness
-Cosine Similarity: 0.72836
+Transformed Sentence: biscuit selling warmer pie
+Cosine Similarity: 0.81952
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42218
+Semantic Token Overlap: 0.45382
 
 Original Sentence: The bird lands on a fence.
-Transformed Sentence: pet estate
-Cosine Similarity: 0.35523
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.43973
+Transformed Sentence: hen land fence
+Cosine Similarity: 0.54773
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.50276
 
 Original Sentence: A driver starts the engine.
-Transformed Sentence: leading initiate
-Cosine Similarity: 0.41649
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42206
+Transformed Sentence: driver start machine
+Cosine Similarity: 0.82346
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.50547
 
 Original Sentence: The leaves fall to the ground.
-Transformed Sentence: paper happen
-Cosine Similarity: 0.52409
+Transformed Sentence: papers downfall land
+Cosine Similarity: 0.55404
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.43942
+Semantic Token Overlap: 0.48206
 
 Original Sentence: A boy climbs the ladder.
-Transformed Sentence: boy rise
-Cosine Similarity: 0.65163
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.59480
+Transformed Sentence: man climb staircase
+Cosine Similarity: 0.70102
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.49590
 
 Original Sentence: The cup sits on the desk.
-Transformed Sentence: bottle being
-Cosine Similarity: 0.28201
+Transformed Sentence: cube sit table
+Cosine Similarity: 0.75444
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.43882
+Semantic Token Overlap: 0.52522
 
 Original Sentence: A dog follows the path.
-Transformed Sentence: pet follow
-Cosine Similarity: 0.72993
+Transformed Sentence: pet following route
+Cosine Similarity: 0.76650
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.53761
+Semantic Token Overlap: 0.50989
 
 Original Sentence: The clock shows ten.
-Transformed Sentence: time exhibit
-Cosine Similarity: 0.57897
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44039
+Transformed Sentence: clock show decade
+Cosine Similarity: 0.69161
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.53609
 
 Original Sentence: A girl waves her hand.
-Transformed Sentence: boy flowing
-Cosine Similarity: 0.31021
+Transformed Sentence: dame tide hands
+Cosine Similarity: 0.66727
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40390
+Semantic Token Overlap: 0.40121
 
 Original Sentence: The book falls to the floor.
-Transformed Sentence: paper occur
-Cosine Similarity: 0.41458
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.42170
+Transformed Sentence: book downfall floor
+Cosine Similarity: 0.72758
+Jaccard Similarity: 0.33333
+Semantic Token Overlap: 0.47936
 
 Original Sentence: A farmer feeds the cows.
-Transformed Sentence: laborer feeding
-Cosine Similarity: 0.57175
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44463
+Transformed Sentence: farmer feed cattle
+Cosine Similarity: 0.85654
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.58320
 
 Original Sentence: The door closes softly.
-Transformed Sentence: entree end
-Cosine Similarity: 0.57846
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.34535
+Transformed Sentence: door close gentle
+Cosine Similarity: 0.84131
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.53331
 
 Original Sentence: A man washes the car.
-Transformed Sentence: man shower
-Cosine Similarity: 0.70668
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.50395
+Transformed Sentence: man washing car
+Cosine Similarity: 0.95186
+Jaccard Similarity: 0.33333
+Semantic Token Overlap: 0.59063
 
 Original Sentence: The water fills the bowl.
-Transformed Sentence: flowing filling
-Cosine Similarity: 0.73598
+Transformed Sentence: liquid filling sack
+Cosine Similarity: 0.77908
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.46572
+Semantic Token Overlap: 0.40685
 
 Original Sentence: A child finds a coin.
-Transformed Sentence: boy discover
-Cosine Similarity: 0.52236
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.52767
+Transformed Sentence: offspring finding coin
+Cosine Similarity: 0.87501
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.47454
 
 Original Sentence: The wind shakes the window.
-Transformed Sentence: jet yell
-Cosine Similarity: 0.43774
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.36599
+Transformed Sentence: air tremble window
+Cosine Similarity: 0.84581
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.46567
 
 Original Sentence: A woman lights a candle.
-Transformed Sentence: man fire
-Cosine Similarity: 0.34905
+Transformed Sentence: dame illumination flame
+Cosine Similarity: 0.64537
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.45142
+Semantic Token Overlap: 0.40600
 
 Original Sentence: The car turns left.
-Transformed Sentence: car turning
-Cosine Similarity: 0.72171
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.48466
+Transformed Sentence: car turn leave
+Cosine Similarity: 0.84656
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.45630
 
 Original Sentence: A dog barks at night.
-Transformed Sentence: pet hair
-Cosine Similarity: 0.34828
+Transformed Sentence: pet rind nightfall
+Cosine Similarity: 0.35043
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41234
+Semantic Token Overlap: 0.47795
 
 Original Sentence: The sun sets behind hills.
-Transformed Sentence: dark set past
-Cosine Similarity: 0.34180
+Transformed Sentence: day setup back hill
+Cosine Similarity: 0.53733
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.38403
+Semantic Token Overlap: 0.43119
 
 Original Sentence: A boy carries a bag.
-Transformed Sentence: boy bring
-Cosine Similarity: 0.70242
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.54314
+Transformed Sentence: man takings bag
+Cosine Similarity: 0.83603
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.45665
 
 Original Sentence: The teacher asks a question.
-Transformed Sentence: didactics ask
-Cosine Similarity: 0.59255
+Transformed Sentence: instructor asking asking
+Cosine Similarity: 0.84042
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40240
+Semantic Token Overlap: 0.48537
 
 Original Sentence: A bird sings in the tree.
-Transformed Sentence: pet cry
-Cosine Similarity: 0.25633
+Transformed Sentence: hen singing wood
+Cosine Similarity: 0.55733
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.46612
+Semantic Token Overlap: 0.53897
 
 Original Sentence: The river flows slowly.
-Transformed Sentence: flowing flowing
-Cosine Similarity: 0.55919
+Transformed Sentence: flow flow slow
+Cosine Similarity: 0.77932
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.46129
+Semantic Token Overlap: 0.45017
 
 Original Sentence: A girl opens the window.
-Transformed Sentence: boy discover
-Cosine Similarity: 0.11301
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.37651
+Transformed Sentence: dame uncover window
+Cosine Similarity: 0.73073
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.42173
 
 Original Sentence: The cat hides under the chair.
-Transformed Sentence: pet disguise
-Cosine Similarity: 0.26235
+Transformed Sentence: pet hiding sit
+Cosine Similarity: 0.51209
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.43978
+Semantic Token Overlap: 0.52605
 
 Original Sentence: A boy draws a circle.
-Transformed Sentence: boy pull
-Cosine Similarity: 0.46009
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.54980
+Transformed Sentence: man pulling turn
+Cosine Similarity: 0.47423
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.48067
 
 Original Sentence: The shop sells fruit.
-Transformed Sentence: shop sale
-Cosine Similarity: 0.50389
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.43853
+Transformed Sentence: store selling yield
+Cosine Similarity: 0.55720
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.41321
 
 Original Sentence: A man reads the news.
-Transformed Sentence: man learn
-Cosine Similarity: 0.48799
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.50080
+Transformed Sentence: man read newspaper
+Cosine Similarity: 0.79036
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.54679
 
 Original Sentence: The rain stops suddenly.
-Transformed Sentence: rain halt
-Cosine Similarity: 0.80423
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.52589
+Transformed Sentence: rainfall stoppage instant
+Cosine Similarity: 0.75687
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.38565
 
 Original Sentence: A child kicks a stone.
-Transformed Sentence: boy pushing
-Cosine Similarity: 0.55023
+Transformed Sentence: offspring kick rock
+Cosine Similarity: 0.74825
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.53009
+Semantic Token Overlap: 0.42734
 
 Original Sentence: The lamp lights the room.
-Transformed Sentence: fire fire
-Cosine Similarity: 0.49812
+Transformed Sentence: flame illumination rum
+Cosine Similarity: 0.60124
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.39926
+Semantic Token Overlap: 0.43682
 
 Original Sentence: A dog sleeps on the rug.
-Transformed Sentence: pet bed
-Cosine Similarity: 0.66538
+Transformed Sentence: pet waken wrap
+Cosine Similarity: 0.35843
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.53561
+Semantic Token Overlap: 0.44846
 
 Original Sentence: The wind cools the air.
-Transformed Sentence: warmness cooling
-Cosine Similarity: 0.84807
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.41181
+Transformed Sentence: air cool air
+Cosine Similarity: 0.86292
+Jaccard Similarity: 0.20000
+Semantic Token Overlap: 0.56288
 
 Original Sentence: A girl drinks warm tea.
-Transformed Sentence: boy liquor warmness
-Cosine Similarity: 0.33169
+Transformed Sentence: dame drink warmer drink
+Cosine Similarity: 0.64549
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.34331
+Semantic Token Overlap: 0.35913
 
 Original Sentence: The boy counts the coins.
-Transformed Sentence: boy calculate
-Cosine Similarity: 0.59939
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.59200
+Transformed Sentence: man calculate coin
+Cosine Similarity: 0.80403
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.53377
 
 Original Sentence: A bird pecks the ground.
-Transformed Sentence: pet crimp
-Cosine Similarity: 0.43148
+Transformed Sentence: hen pie land
+Cosine Similarity: 0.38807
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44756
+Semantic Token Overlap: 0.51258
 
 Original Sentence: The car parks near the gate.
-Transformed Sentence: car car vicinity
-Cosine Similarity: 0.78561
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.46286
+Transformed Sentence: car resort close door
+Cosine Similarity: 0.70820
+Jaccard Similarity: 0.12500
+Semantic Token Overlap: 0.48806
 
 Original Sentence: A man climbs the stairs.
-Transformed Sentence: man rise
-Cosine Similarity: 0.70870
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.55909
+Transformed Sentence: man climb staircase
+Cosine Similarity: 0.96981
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.55243
 
 Original Sentence: The water boils in the pot.
-Transformed Sentence: flowing flowing
-Cosine Similarity: 0.29145
+Transformed Sentence: liquid burning sack
+Cosine Similarity: 0.57853
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40174
+Semantic Token Overlap: 0.40671
 
 Original Sentence: A child paints a house.
-Transformed Sentence: boy color
-Cosine Similarity: 0.31923
+Transformed Sentence: offspring colouring home
+Cosine Similarity: 0.48684
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44424
+Semantic Token Overlap: 0.40621
 
 Original Sentence: The dog runs after a stick.
-Transformed Sentence: pet running
-Cosine Similarity: 0.72011
+Transformed Sentence: pet going rod
+Cosine Similarity: 0.50282
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.52972
+Semantic Token Overlap: 0.48187
 
 Original Sentence: A woman folds a shirt.
-Transformed Sentence: man wrapping
-Cosine Similarity: 0.40817
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.38244
+Transformed Sentence: dame clutches shirt
+Cosine Similarity: 0.69500
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.42865
 
 Original Sentence: The sun lights the path.
-Transformed Sentence: dark fire
-Cosine Similarity: 0.22147
+Transformed Sentence: day illumination route
+Cosine Similarity: 0.64598
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.37054
+Semantic Token Overlap: 0.44611
 
 Original Sentence: A boy opens a box.
-Transformed Sentence: boy discover
-Cosine Similarity: 0.65224
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.51271
+Transformed Sentence: man uncover bag
+Cosine Similarity: 0.69682
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.47418
 
 Original Sentence: The tree grows by the road.
-Transformed Sentence: lumber rise
-Cosine Similarity: 0.49253
+Transformed Sentence: wood growth route
+Cosine Similarity: 0.68636
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.40763
+Semantic Token Overlap: 0.51455
 
 Original Sentence: A girl writes a note.
-Transformed Sentence: boy compose
-Cosine Similarity: 0.35136
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44034
+Transformed Sentence: dame writing note
+Cosine Similarity: 0.84604
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.49202
 
 Original Sentence: The cat watches the bird.
-Transformed Sentence: pet time
-Cosine Similarity: 0.26110
+Transformed Sentence: pet clock hen
+Cosine Similarity: 0.46717
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44026
+Semantic Token Overlap: 0.47467
 
 Original Sentence: A man carries wood.
-Transformed Sentence: man bring
-Cosine Similarity: 0.58058
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.51247
+Transformed Sentence: man takings wood
+Cosine Similarity: 0.90520
+Jaccard Similarity: 0.40000
+Semantic Token Overlap: 0.48595
 
 Original Sentence: The wind moves the clouds.
-Transformed Sentence: jet turning
-Cosine Similarity: 0.55558
+Transformed Sentence: air move cloud
+Cosine Similarity: 0.89505
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.38471
+Semantic Token Overlap: 0.52043
 
 Original Sentence: A child opens a gift.
-Transformed Sentence: boy occur
-Cosine Similarity: 0.55395
+Transformed Sentence: offspring uncover presentment
+Cosine Similarity: 0.67706
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.47352
+Semantic Token Overlap: 0.36817
 
 Original Sentence: The dog drinks milk.
-Transformed Sentence: pet liquor
-Cosine Similarity: 0.38329
+Transformed Sentence: pet drink breast
+Cosine Similarity: 0.57345
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.43591
+Semantic Token Overlap: 0.45302
 
 Original Sentence: A woman closes the book.
-Transformed Sentence: man end
-Cosine Similarity: 0.34940
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.36635
+Transformed Sentence: dame close book
+Cosine Similarity: 0.49280
+Jaccard Similarity: 0.14286
+Semantic Token Overlap: 0.45505
 
 Original Sentence: The bell rings at noon.
-Transformed Sentence: call chain
-Cosine Similarity: 0.34055
+Transformed Sentence: clock clutches twilight
+Cosine Similarity: 0.53514
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.46423
+Semantic Token Overlap: 0.44047
 
 Original Sentence: A boy throws a stone.
-Transformed Sentence: boy throw
-Cosine Similarity: 0.74232
-Jaccard Similarity: 0.20000
-Semantic Token Overlap: 0.58779
+Transformed Sentence: man throw rock
+Cosine Similarity: 0.86463
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.53702
 
 Original Sentence: The river touches the sand.
-Transformed Sentence: flowing touch
-Cosine Similarity: 0.53155
+Transformed Sentence: flow impact soil
+Cosine Similarity: 0.50785
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.44387
+Semantic Token Overlap: 0.45962
 
 Original Sentence: A girl holds a flower.
-Transformed Sentence: boy seize
-Cosine Similarity: 0.15916
+Transformed Sentence: dame holder blossom
+Cosine Similarity: 0.55638
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.39759
+Semantic Token Overlap: 0.41814
 
 Original Sentence: The door opens slowly.
-Transformed Sentence: entree discover
-Cosine Similarity: 0.32319
-Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.29884
+Transformed Sentence: door uncover slow
+Cosine Similarity: 0.78306
+Jaccard Similarity: 0.16667
+Semantic Token Overlap: 0.49064
 
 Original Sentence: A man checks the map.
-Transformed Sentence: man examine
-Cosine Similarity: 0.68218
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.52985
+Transformed Sentence: man examination map
+Cosine Similarity: 0.91532
+Jaccard Similarity: 0.33333
+Semantic Token Overlap: 0.52179
 
 Original Sentence: The dog waits patiently.
-Transformed Sentence: pet hope
-Cosine Similarity: 0.48417
+Transformed Sentence: pet await tolerate
+Cosine Similarity: 0.74432
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.47483
+Semantic Token Overlap: 0.43839
 
 Original Sentence: The child draws a sun.
-Transformed Sentence: boy pull
-Cosine Similarity: 0.33623
+Transformed Sentence: offspring pulling day
+Cosine Similarity: 0.43746
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.52495
+Semantic Token Overlap: 0.42216
 
 Original Sentence: The wind pushes the boat.
-Transformed Sentence: jet pushing
-Cosine Similarity: 0.50818
+Transformed Sentence: air pulling watercraft
+Cosine Similarity: 0.72664
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.48916
+Semantic Token Overlap: 0.44488
 
 Original Sentence: A girl finds a shell.
-Transformed Sentence: boy discover
-Cosine Similarity: 0.25276
+Transformed Sentence: dame finding peel
+Cosine Similarity: 0.59525
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.48455
+Semantic Token Overlap: 0.47259
 
 Original Sentence: That is a pretty young lady.
-Transformed Sentence: young young
-Cosine Similarity: 0.68367
-Jaccard Similarity: 0.16667
-Semantic Token Overlap: 0.46490
+Transformed Sentence: goody youth dame
+Cosine Similarity: 0.81646
+Jaccard Similarity: 0.00000
+Semantic Token Overlap: 0.45150
 
 Original Sentence: An apple is not a banana.
-Transformed Sentence: man
-Cosine Similarity: 0.25327
+Transformed Sentence: appall monkey
+Cosine Similarity: 0.40920
 Jaccard Similarity: 0.00000
-Semantic Token Overlap: 0.35720
+Semantic Token Overlap: 0.39558
 
 Test Sentences: 100
 
 Cosine Similarity:
-Average: 0.48948
-Median: 0.50101
-Minimum: 0.02859
-Maximum: 0.84807
-90th Percentile: 0.70985
+Average: 0.67996
+Median: 0.70461
+Minimum: 0.26705
+Maximum: 0.96981
+90th Percentile: 0.86269
 
 Jaccard Similarity:
-Average: 0.04670
+Average: 0.06669
 Median: 0.00000
 Minimum: 0.00000
-Maximum: 0.20000
-90th Percentile: 0.20000
+Maximum: 0.40000
+90th Percentile: 0.16667
 
 Semantic Token Overlap:
-Average: 0.45193
-Median: 0.44443
-Minimum: 0.29884
-Maximum: 0.59480
-90th Percentile: 0.53581
+Average: 0.47005
+Median: 0.47461
+Minimum: 0.34318
+Maximum: 0.59063
+90th Percentile: 0.53722

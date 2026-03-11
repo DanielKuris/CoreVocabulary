@@ -13,19 +13,23 @@ def closest_vocabulary_word(target_vector, vocab_embeddings):
     return list(vocab_embeddings.keys())[closest_index]
 
 
-def local_context_vector(words, index, runtime, window_size):
+def context_vector(words, index, runtime, window_size):
     """
-    Return the sum of embeddings for nearby alphabetic words.
+    Return the average embedding of context words around the current word.
     """
 
     embed_word = runtime["embed_word"]
     model = runtime["model"]
     tokenizer = runtime["tokenizer"]
 
-    start = max(0, index - window_size)
-    end = min(len(words), index + window_size + 1)
-    vectors = []
+    if window_size == -1:
+        start = 0
+        end = len(words)
+    else:
+        start = max(0, index - window_size)
+        end = min(len(words), index + window_size + 1)
 
+    vectors = []
     for neighbor_index in range(start, end):
         if neighbor_index == index:
             continue
@@ -37,12 +41,12 @@ def local_context_vector(words, index, runtime, window_size):
         sample_vector = embed_word("word", model, tokenizer).reshape(-1)
         return np.zeros_like(sample_vector)
 
-    return np.sum(vectors, axis=0)
+    return np.mean(vectors, axis=0)
 
 
 def build_replacer(words, runtime, config):
     """
-    Build a replacer that adds weighted local context to each word vector.
+    Build a replacer that blends each word vector with its context vector.
     """
 
     vocab_embeddings = runtime["vocab_embeddings"]
@@ -54,12 +58,12 @@ def build_replacer(words, runtime, config):
 
     def replace_word(word, index):
         """
-        Replace a word using nearby context.
+        Replace a word using context-aware nearest-neighbor lookup.
         """
 
         word_vector = embed_word(word, model, tokenizer).reshape(-1)
-        context_vector = local_context_vector(words, index, runtime, window_size)
-        target_vector = word_vector + (context_weight * context_vector)
+        current_context_vector = context_vector(words, index, runtime, window_size)
+        target_vector = ((1 - context_weight) * word_vector) + (context_weight * current_context_vector)
         return closest_vocabulary_word(target_vector, vocab_embeddings)
 
     return replace_word

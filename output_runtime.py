@@ -1,8 +1,9 @@
-def print_settings(stopword_mode, heuristic_name, heuristic_config):
+def print_settings(stopword_mode, heuristic_name, heuristic_config, vocabulary_size):
     """
     Print the active runtime settings.
     """
 
+    print(f"Vocabulary size: {vocabulary_size}")
     print(f"Stopword mode: {stopword_mode}")
     print(f"Heuristic: {heuristic_name}")
     for key, value in heuristic_config.items():

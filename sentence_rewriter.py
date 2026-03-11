@@ -1,18 +1,16 @@
 from pathlib import Path
 
-from config_runtime import get_heuristic_config, get_stopword_mode
+from config_runtime import get_heuristic_config, get_stopword_mode, get_vocabulary_size
 from heuristics import get_heuristic_builder
 from output_runtime import print_run_summary, print_settings
+from results_runtime import summarize_similarity_results, write_similarity_results
 from similarity_metrics import compare_sentences
+from text_runtime import is_replaceable_word, join_tokens, tokenize_sentence
 from vocabulary_runtime import (
+    build_vocab_embeddings,
     embed_word,
-    filter_replaceable_words,
-    is_replaceable_word,
     load_replacement_model,
-    load_vocab_embeddings,
     load_vocabulary,
-    summarize_similarity_results,
-    write_similarity_results,
 )
 
 
@@ -22,8 +20,9 @@ MODEL, TOKENIZER = load_replacement_model()
 HEURISTIC_CONFIG = get_heuristic_config()
 HEURISTIC_NAME = HEURISTIC_CONFIG["name"]
 STOPWORD_MODE = get_stopword_mode()
-VOCABULARY = load_vocabulary()
-VOCAB_EMBEDDINGS = load_vocab_embeddings()
+VOCABULARY_SIZE = get_vocabulary_size()
+VOCABULARY = load_vocabulary(VOCABULARY_SIZE)
+VOCAB_EMBEDDINGS = build_vocab_embeddings(VOCABULARY, MODEL, TOKENIZER)
 RUNTIME = {
     "embed_word": embed_word,
     "model": MODEL,
@@ -50,8 +49,7 @@ def rewrite_sentence(sentence):
     Return a sentence with out-of-vocabulary content words replaced.
     """
 
-    words = sentence.split()
-    replaceable_words = set(filter_replaceable_words(words))
+    words = tokenize_sentence(sentence)
     replace_word = get_heuristic_builder(HEURISTIC_NAME)(words, RUNTIME, HEURISTIC_CONFIG)
 
     rewritten_words = []
@@ -59,10 +57,10 @@ def rewrite_sentence(sentence):
         normalized_word = word.lower()
         if keep_original_word(word):
             rewritten_words.append(word)
-        elif normalized_word in replaceable_words:
+        elif is_replaceable_word(word):
             rewritten_words.append(replace_word(normalized_word, index))
 
-    return " ".join(rewritten_words)
+    return join_tokens(rewritten_words)
 
 
 def load_test_sentences(input_path=DEFAULT_INPUT_PATH):
@@ -103,7 +101,7 @@ def main():
     """
 
     print(f"Processing sentences from {DEFAULT_INPUT_PATH} ...")
-    print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG)
+    print_settings(STOPWORD_MODE, HEURISTIC_NAME, HEURISTIC_CONFIG, VOCABULARY_SIZE)
     results = process_test_sentences()
     print_run_summary(summarize_similarity_results(results))
     print(f"Processing complete. Results written to {DEFAULT_OUTPUT_PATH}")
