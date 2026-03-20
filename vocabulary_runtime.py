@@ -7,10 +7,22 @@ from sklearn.preprocessing import normalize
 
 
 VOCAB_CSV_DIR = Path("vocabularies/csv_vocab")
-LABSE_EMBEDDING_SOURCE = "setu4993/LaBSE"
+BERT_EMBEDDING_SOURCE = "bert-base-uncased"
 
+def embed_word(word, model, tokenizer, sentence=None):
+    """
+    Wrapper func for each mode
+    """
+    
+    if not sentence:
+        return embed_word_without_context(word, model, tokenizer)
 
-def embed_word(word, model, tokenizer):
+    else:
+        return embed_word_with_context(word, model, tokenizer, sentence)
+
+    raise ValueError("Invalid embedding mode")
+
+def embed_word_without_context(word, model, tokenizer):
     """
     Return a normalized embedding for a single word.
     """
@@ -20,6 +32,32 @@ def embed_word(word, model, tokenizer):
     embedding = outputs[1].detach().numpy()
     return normalize(embedding)
 
+def embed_word_with_context(sentence, target_word, model, tokenizer):
+    """
+    Return embedding for a single word given sentence's context
+    """
+
+    inputs = tokenizer(sentence, return_tensors="pt")
+    outputs = model(**inputs)
+
+    tokens = tokenizer.tokenize(sentence)
+    token_embeddings = outputs.last_hidden_state[0]
+
+    target_tokens = tokenizer.tokenize(target_word)
+
+    for i in range(len(tokens)):
+        if tokens[i:i+len(target_tokens)] == target_tokens:
+            start = i
+            end = i + len(target_tokens)
+            break
+    else:
+        raise ValueError("Word not found")
+
+    subword_vectors = token_embeddings[start+1:end+1]
+
+    word_embedding = torch.mean(subword_vectors, dim=0)
+
+    return word_embedding.detach().numpy()
 
 def vocabulary_csv_path(vocabulary_size):
     """
@@ -53,17 +91,17 @@ def load_replacement_model():
     Load the word-level model used for nearest-vocabulary replacement.
     """
 
-    tokenizer = BertTokenizer.from_pretrained(LABSE_EMBEDDING_SOURCE)
-    model = BertModel.from_pretrained(LABSE_EMBEDDING_SOURCE)
+    tokenizer = BertTokenizer.from_pretrained(BERT_EMBEDDING_SOURCE)
+    model = BertModel.from_pretrained(BERT_EMBEDDING_SOURCE)
     return model, tokenizer
 
 
 def build_vocab_embeddings(vocabulary, model, tokenizer):
     """
-    Build LaBSE embeddings for the allowed vocabulary words.
+    Build Bert embeddings for the allowed vocabulary words.
     """
 
     vocab_embeddings = {}
     for word in vocabulary:
-        vocab_embeddings[word] = embed_word(word, model, tokenizer).reshape(-1)
+        vocab_embeddings[word] = embed_word_without_context(word, model, tokenizer).reshape(-1)
     return vocab_embeddings

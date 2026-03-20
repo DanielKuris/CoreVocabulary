@@ -153,3 +153,4 @@ def get_heuristic_config(path=DEFAULT_CONFIG_PATH):
         )
 
     return heuristic_config
+
