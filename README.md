@@ -4,6 +4,40 @@ This repo takes a given core vocabulary, such as 600 words that are treated as t
 
 The goal is to map each test sentence onto the limited dictionary and then measure how similar the rewritten sentence remains to the original sentence.
 
+## Metrics
+
+- `Cosine Similarity`: compares sentence embeddings for the original and rewritten sentences. This is the main semantic similarity score.
+- `Jaccard Similarity`: computes exact word overlap after lowercasing and keeping alphabetic words only. It is the size of the word-set intersection divided by the size of the word-set union.
+- `Semantic Token Overlap`: compares token embeddings between the two sentences. For each token in the original sentence, it finds the most similar token in the rewritten sentence, sums those best-match similarities, and divides by the total number of tokens across both sentences. This is useful when the rewritten sentence uses different words that are still semantically close.
+
+## Embeddings
+
+Both sides of the replacement lookup use `setu4993/LaBSE`.
+
+- The vocabulary words are read from `vocabularies/csv_vocab/vocab{size}.csv`.
+- At the start of the run, every vocabulary word is embedded with LaBSE.
+- During rewriting, each replaceable source word is also embedded with LaBSE.
+- Replacement is done by comparing those LaBSE vectors directly.
+
+## Heuristics
+
+- `nearest_word`: compare each source word embedding directly to all vocabulary embeddings and choose the closest match.
+- `local_context`: compare each source word using `(1 - local_context_weight) * word_vector + local_context_weight * context_vector`, where `context_vector` is built from context words around the current word.
+- `top_k_local_context`: take the top `k` nearest vocabulary words for the source word, then rerank only that shortlist using the context vector.
+- `reordered_top_k_local_context`: build a `top_k_local_context` rewrite first, then try permutations of the replaceable words and keep the order with the best sentence-level cosine similarity to the original sentence.
+- `pos_aware`: restrict the candidate vocabulary to words with the same universal POS tag as the source word, then choose the nearest match in that filtered set.
+
+## POS Tagging
+
+The `pos_aware` heuristic uses NLTK universal POS tags.
+
+- Sentence tokens are tagged with `nltk.pos_tag(..., tagset="universal")`.
+- Vocabulary words are tagged once at startup and grouped by POS.
+- If no same-tag vocabulary words are available, the heuristic falls back to a broader open-class pool or the full vocabulary.
+- This heuristic requires the NLTK POS tagging resources to be installed locally.
+- Install the missing resources with:
+  - `python -c "import nltk; nltk.download('averaged_perceptron_tagger_eng'); nltk.download('universal_tagset')"`
+
 ## Files
 
 - `sentence_rewriter.py`: loads the configured CSV vocabulary, rewrites the test sentences, and runs the batch workflow.
@@ -14,10 +48,11 @@ The goal is to map each test sentence onto the limited dictionary and then measu
 - `config_runtime.py`: loads and validates project settings.
 - `output_runtime.py`: prints runtime settings and run summaries.
 - `pos_runtime.py`: tags sentence tokens and vocabulary words with universal POS labels.
-- `heuristics/nearest_word.py`: replaces each word with the nearest vocabulary word by cosine similarity.
-- `heuristics/local_context.py`: replaces each word using a weighted blend of the word embedding and a context vector from nearby words or the whole sentence.
-- `heuristics/top_k_local_context.py`: reranks the top-k nearest vocabulary candidates using local or sentence-level context.
-- `heuristics/pos_aware.py`: replaces each word using only vocabulary candidates with a matching POS tag.
+- `heuristics/nearest_word.py`: baseline nearest-neighbor heuristic.
+- `heuristics/local_context.py`: context-blended replacement heuristic.
+- `heuristics/top_k_local_context.py`: top-k reranking heuristic.
+- `heuristics/reordered_top_k_local_context.py`: permutation-based reordering heuristic.
+- `heuristics/pos_aware.py`: POS-aware replacement heuristic.
 - `project_config.json`: project settings for vocabulary size, rewrite behavior, metric toggles, and heuristic selection.
 - `vocabularies/csv_vocab/`: CSV vocabularies from 100 to 2000 words.
 
@@ -37,10 +72,11 @@ Example:
     "semantic_token_overlap": true
   },
   "heuristic": {
-    "name": "pos_aware",
+    "name": "reordered_top_k_local_context",
     "local_context_weight": 0.15,
     "local_context_window": 3,
-    "top_k_candidates": 5
+    "top_k_candidates": 5,
+    "reordering_max_tokens": 6
   }
 }
 ```
@@ -55,7 +91,7 @@ Example:
   - `preserve_original_stopwords`: keep stopwords from the original sentence even if they are not in the vocabulary
   - `vocab_only`: keep only words that are in the vocabulary, so stopwords outside the vocabulary are dropped
 
-### Metrics
+### Metrics settings
 
 - `metrics.cosine_similarity_sentences_BERT`
   - enables or disables sentence-level cosine similarity
@@ -68,56 +104,29 @@ Example:
 
 At least one metric must be enabled.
 
-### Heuristics
-
-- `heuristic.name`
-  - `nearest_word`: compare each source word embedding directly to all vocabulary embeddings and choose the closest match
-  - `local_context`: compare each source word using `(1 - local_context_weight) * word_vector + local_context_weight * context_vector`, where `context_vector` is built from context words around the current word
-  - `top_k_local_context`: take the top `k` nearest vocabulary words for the source word, then rerank only that shortlist using the context vector
-  - `pos_aware`: restrict the candidate vocabulary to words with the same universal POS tag as the source word, then choose the nearest match in that filtered set
+### Heuristic settings
 
 - `heuristic.local_context_weight`
-  - used by `local_context` and `top_k_local_context`
+  - used by `local_context`, `top_k_local_context`, and `reordered_top_k_local_context`
   - controls the blend between the current word embedding signal and the context signal
   - `0` means use only the word similarity signal
   - `1` means use only the context signal
 
 - `heuristic.local_context_window`
-  - used by `local_context` and `top_k_local_context`
+  - used by `local_context`, `top_k_local_context`, and `reordered_top_k_local_context`
   - controls how many words before and after the current word are included in the context
   - for example: `3` means up to three words before and three words after
   - `-1` means use the whole sentence as context
 
 - `heuristic.top_k_candidates`
-  - used by `top_k_local_context`
+  - used by `top_k_local_context` and `reordered_top_k_local_context`
   - controls how many nearest vocabulary candidates are shortlisted before reranking
   - for example: `5` means rerank the five nearest vocabulary words
 
-## Metrics
-
-- `Cosine Similarity`: compares sentence embeddings for the original and rewritten sentences. This is the main semantic similarity score.
-- `Jaccard Similarity`: computes exact word overlap after lowercasing and keeping alphabetic words only. It is the size of the word-set intersection divided by the size of the word-set union.
-- `Semantic Token Overlap`: compares token embeddings between the two sentences. For each token in the original sentence, it finds the most similar token in the rewritten sentence, sums those best-match similarities, and divides by the total number of tokens across both sentences. This is useful when the rewritten sentence uses different words that are still semantically close.
-
-## Embeddings
-
-Both sides of the replacement lookup use `setu4993/LaBSE`.
-
-- The vocabulary words are read from `vocabularies/csv_vocab/vocab{size}.csv`.
-- At the start of the run, every vocabulary word is embedded with LaBSE.
-- During rewriting, each replaceable source word is also embedded with LaBSE.
-- Replacement is done by comparing those LaBSE vectors directly.
-
-## POS Tagging
-
-The `pos_aware` heuristic uses NLTK universal POS tags.
-
-- Sentence tokens are tagged with `nltk.pos_tag(..., tagset="universal")`.
-- Vocabulary words are tagged once at startup and grouped by POS.
-- If no same-tag vocabulary words are available, the heuristic falls back to a broader open-class pool or the full vocabulary.
-- This heuristic requires the NLTK POS tagging resources to be installed locally.
-- Install the missing resources with:
-  - `python -c "import nltk; nltk.download('averaged_perceptron_tagger_eng'); nltk.download('universal_tagset')"`
+- `heuristic.reordering_max_tokens`
+  - used by `reordered_top_k_local_context`
+  - controls the maximum number of replaceable words for exhaustive permutation search
+  - for example: `6` means the heuristic tries every ordering only when there are at most six replaceable words
 
 ## Run
 

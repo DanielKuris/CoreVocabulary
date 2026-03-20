@@ -77,6 +77,17 @@ def validate_top_k_candidates(value):
     return top_k
 
 
+def validate_reordering_max_tokens(value):
+    """
+    Validate that the permutation-search token limit is a positive integer.
+    """
+
+    max_tokens = int(value)
+    if max_tokens < 1:
+        raise ValueError(f"reordering_max_tokens must be a positive integer, got {value}")
+    return max_tokens
+
+
 def validate_metrics_config(metrics_config):
     """
     Validate and normalize the configured metric toggles.
@@ -150,6 +161,11 @@ def get_heuristic_config(path=DEFAULT_CONFIG_PATH):
     if "top_k_candidates" in heuristic_config:
         heuristic_config["top_k_candidates"] = validate_top_k_candidates(
             heuristic_config["top_k_candidates"]
+        )
+
+    if "reordering_max_tokens" in heuristic_config:
+        heuristic_config["reordering_max_tokens"] = validate_reordering_max_tokens(
+            heuristic_config["reordering_max_tokens"]
         )
 
     return heuristic_config
