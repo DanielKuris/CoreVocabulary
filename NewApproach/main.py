@@ -53,19 +53,34 @@ def run_model_inference(model_key: str, simplifier_class, model_name: str, targe
     return metrics, duration
 
 def print_master_dashboard(all_results: list):
-    """Generates the clean comparative terminal summary matrix grid reporting metrics rows."""
+    """Generates a clean comparative terminal summary matrix grid reporting metrics rows."""
     print("\n" + "="*53 + " MASTER BENCHMARK MATRIX " + "="*54)
     print("-" * 132)
     print(f"| {'Dataset':<12} | {'Vocabulary':<24} | {'Model Type':<14} | {'SARI':<8} | {'BLEU':<8} | {'METEOR':<8} | {'BERTScore':<10} | {'Time':<8} |")
     print(f"|{'-'*14}|{'-'*26}|{'-'*16}|{'-'*10}|{'-'*10}|{'-'*10}|{'-'*12}|{'-'*10}|")
     
     for res in all_results:
+        # Determine if this row is the absolute first model printed for this configuration
+        is_first_printed_row = True
+        
         if config.MODEL_SELECTION["MLM"]:
-            print(f"| {res['dataset']:<12} | {res['filename']:<24} | DistilBERT MLM | {res['mlm_sari']:<8.2f} | {res['mlm_bleu']:<8.2f} | {res['mlm_meteor']:<8.2f} | {res['mlm_bert']:<10.2f} | {res['mlm_time']:>5.1f}s   |")
+            d_label = res['dataset'] if is_first_printed_row else ""
+            v_label = res['filename'] if is_first_printed_row else ""
+            print(f"| {d_label:<12} | {v_label:<24} | DistilBERT MLM | {res['mlm_sari']:<8.2f} | {res['mlm_bleu']:<8.2f} | {res['mlm_meteor']:<8.2f} | {res['mlm_bert']:<10.2f} | {res['mlm_time']:>5.1f}s   |")
+            is_first_printed_row = False
+            
         if config.MODEL_SELECTION["T5"]:
-            print(f"| {'':<12} | {'':<24} | T5-Small S2S   | {res['t5_sari']:<8.2f} | {res['t5_bleu']:<8.2f} | {res['t5_meteor']:<8.2f} | {res['t5_bert']:<10.2f} | {res['t5_time']:>5.1f}s   |")
+            d_label = res['dataset'] if is_first_printed_row else ""
+            v_label = res['filename'] if is_first_printed_row else ""
+            print(f"| {d_label:<12} | {v_label:<24} | T5-Small S2S   | {res['t5_sari']:<8.2f} | {res['t5_bleu']:<8.2f} | {res['t5_meteor']:<8.2f} | {res['t5_bert']:<10.2f} | {res['t5_time']:>5.1f}s   |")
+            is_first_printed_row = False
+            
         if config.MODEL_SELECTION["BYT5"]:
-            print(f"| {'':<12} | {'':<24} | ByT5 Positive  | {res['byt5_sari']:<8.2f} | {res['byt5_bleu']:<8.2f} | {res['byt5_meteor']:<8.2f} | {res['byt5_bert']:<10.2f} | {res['byt5_time']:>5.1f}s   |")
+            d_label = res['dataset'] if is_first_printed_row else ""
+            v_label = res['filename'] if is_first_printed_row else ""
+            print(f"| {d_label:<12} | {v_label:<24} | ByT5 Positive  | {res['byt5_sari']:<8.2f} | {res['byt5_bleu']:<8.2f} | {res['byt5_meteor']:<8.2f} | {res['byt5_bert']:<10.2f} | {res['byt5_time']:>5.1f}s   |")
+            is_first_printed_row = False
+            
         print("-" * 132)
     print("=" * 132 + "\n")
 

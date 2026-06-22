@@ -12,7 +12,7 @@ from nltk.corpus import stopwords
 # =====================================================================
 MODEL_SELECTION = {
     "MLM": True,          # Model A: DistilBERT (Template Substitution)
-    "T5": False,          # Model B: T5-Small (Negative Token Masking)
+    "T5": True,          # Model B: T5-Small (Negative Token Masking)
     "BYT5": True          # Model C: ByT5-Small (Positive Character Trie)
 }
 
@@ -30,7 +30,7 @@ METRIC_SELECTION = {
 # 📚 3. EXEMPT VOCABULARY CONFIGURATION
 # Options: "english_stopwords" (NLTK set) or "none"
 # =====================================================================
-EXEMPT_MODE = "english_stopwords" 
+EXEMPT_MODE = "None"  # Change to "english_stopwords" to exempt common stopwords from constraints
 
 if EXEMPT_MODE == "english_stopwords":
     EXEMPT_VOCABULARY = set(stopwords.words('english'))

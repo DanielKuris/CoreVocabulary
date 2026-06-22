@@ -83,8 +83,17 @@ class SimplificationEvaluator:
 
         print("🧮 Calculating academic metrics...")
         
+        # 🩹 CRITICAL FIX: Ensure no predictions are completely blank or empty strings, 
+        # which breaks internal bert-score sentence encoder logic maps.
+        safe_outputs = []
+        for out in system_outputs:
+            if out is None or not str(out).strip():
+                safe_outputs.append(".") # Safe placeholder fallback
+            else:
+                safe_outputs.append(str(out).strip())
+
         # 1. BLEU Score
-        bleu = sacrebleu.corpus_bleu(system_outputs, self.references)
+        bleu = sacrebleu.corpus_bleu(safe_outputs, self.references)
         bleu_score = bleu.score
 
         # Transpose references back to [samples, references] for iteration rows
@@ -93,28 +102,28 @@ class SimplificationEvaluator:
 
         # 2. SARI Score
         sari_scores = []
-        for orig, sys, refs in zip(self.source_sentences, system_outputs, refs_per_sample):
+        for orig, sys, refs in zip(self.source_sentences, safe_outputs, refs_per_sample):
             sari_scores.append(self._calculate_sari_pure_python(orig, sys, list(refs)))
         avg_sari = np.mean(sari_scores)
 
         # 3. METEOR Score (Handles lemmatization/synonyms natively)
         print("🧪 Extracting lemmatized match states via METEOR...")
-        meteor_results = self.meteor_metric.compute(predictions=system_outputs, references=refs_as_strings_list)
+        meteor_results = self.meteor_metric.compute(predictions=safe_outputs, references=refs_as_strings_list)
         meteor_score = meteor_results["meteor"] * 100
 
         # 4. BERTScore (Tracks contextual semantic similarity vectors)
         print("🧠 Running contextual vector alignment via BERTScore...")
         bert_results = self.bertscore_metric.compute(
-            predictions=system_outputs, 
+            predictions=safe_outputs, 
             references=refs_as_strings_list, 
             lang="en",
-            model_type="distilbert-base-uncased" # Fast, lightweight reference vector space
+            model_type="distilbert-base-uncased"
         )
         avg_bertscore_f1 = np.mean(bert_results["f1"]) * 100
 
         # 5. Compression Ratio
         orig_lens = [len(s.split()) for s in self.source_sentences]
-        sys_lens = [len(s.split()) for s in system_outputs]
+        sys_lens = [len(s.split()) for s in safe_outputs]
         compression_ratio = np.mean(sys_lens) / np.mean(orig_lens)
 
         return {
