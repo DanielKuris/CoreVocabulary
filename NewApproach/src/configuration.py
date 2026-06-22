@@ -82,3 +82,6 @@ DATASETS = {
     "asset": True,
     "sick": True         # Sentence Involvement & Compositional Knowledge benchmark
 }
+
+# 🆕 Dynamic SICK control configurations for future iterations
+SICK_SLICING = 400  # Set to an integer (e.g., 400) or None if you want to run the full 9,840 split
