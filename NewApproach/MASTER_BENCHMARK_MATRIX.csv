@@ -1,0 +1,3 @@
+Dataset,Vocabulary,Exempt_Mode,Model_ID,SARI,BLEU,METEOR,BERTScore,Jaccard_Similarity,Cosine_Similarity,Compression_Ratio
+turk_corpus,ThingExplainer1000.txt,english_stopwords,MLM,31.5381,18.0838,44.8119,81.33,34.9586,84.0474,0.9314
+turk_corpus,ThingExplainer1000.txt,english_stopwords,T5,22.9103,1.2298,5.2733,56.8676,1.8826,55.6119,0.267

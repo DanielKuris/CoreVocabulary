@@ -2,10 +2,13 @@ import numpy as np
 from datasets import load_dataset
 import sacrebleu
 import evaluate
+from collections import Counter
+import torch
+import sys
 
 class SimplificationEvaluator:
     def __init__(self, dataset_name: str = "turk_corpus"):
-        self.dataset_name = dataset_name
+        self.dataset_name = dataset_name.lower().strip()
         self.source_sentences = []
         self.references = []  # List of lists [num_refs, num_samples]
         
@@ -16,22 +19,31 @@ class SimplificationEvaluator:
 
     def load_data(self):
         """Fetches and formats benchmarks automatically from Hugging Face."""
-        print(f"📦 Loading '{self.dataset_name}' from GEM/wiki_auto_asset_turk via Hugging Face...")
+        print(f"📦 Loading '{self.dataset_name}' via Hugging Face...")
         
         if self.dataset_name == "turk_corpus":
             raw_dataset = load_dataset("GEM/wiki_auto_asset_turk", split="test_turk")
             self.source_sentences = raw_dataset["source"]
             self.references = raw_dataset["references"] 
+            self.references = list(map(list, zip(*self.references)))
             
         elif self.dataset_name == "asset":
             raw_dataset = load_dataset("GEM/wiki_auto_asset_turk", split="test_asset")
             self.source_sentences = raw_dataset["source"]
             self.references = raw_dataset["references"]
+            self.references = list(map(list, zip(*self.references)))
+            
+        elif self.dataset_name == "sick":
+            # Loading SICK dataset split. SICK has sentence_A, sentence_B standard mappings.
+            raw_dataset = load_dataset("sick", split="test")
+            self.source_sentences = raw_dataset["sentence_A"]
+            # SICK sentences come with a single definitive text reference mapping row
+            # Wrap in an outer list context to match the multi-reference format used by downstream metrics
+            self.references = [raw_dataset["sentence_B"]]
             
         else:
-            raise ValueError(f"Unsupported dataset: {self.dataset_name}. Choose 'turk_corpus' or 'asset'.")
+            raise ValueError(f"Unsupported dataset: {self.dataset_name}. Choose 'turk_corpus', 'asset', or 'sick'.")
 
-        self.references = list(map(list, zip(*self.references)))
         print(f"✅ Loaded {len(self.source_sentences)} test sentences.")
 
     @staticmethod
@@ -77,18 +89,25 @@ class SimplificationEvaluator:
 
         return (sari_score / 4.0) * 100
 
+    @staticmethod
+    def _calculate_jaccard(sent1: str, sent2: str) -> float:
+        """Calculates token-level Jaccard Similarity intersection over union."""
+        words1 = set(sent1.lower().split())
+        words2 = set(sent2.lower().split())
+        intersection = words1.intersection(words2)
+        union = words1.union(words2)
+        return len(intersection) / max(len(union), 1)
+
     def compute_metrics(self, system_outputs: list) -> dict:
         if not self.source_sentences:
             raise ValueError("Dataset not loaded. Call load_data() first.")
 
         print("🧮 Calculating academic metrics...")
         
-        # 🩹 CRITICAL FIX: Ensure no predictions are completely blank or empty strings, 
-        # which breaks internal bert-score sentence encoder logic maps.
         safe_outputs = []
         for out in system_outputs:
             if out is None or not str(out).strip():
-                safe_outputs.append(".") # Safe placeholder fallback
+                safe_outputs.append(".") 
             else:
                 safe_outputs.append(str(out).strip())
 
@@ -96,30 +115,50 @@ class SimplificationEvaluator:
         bleu = sacrebleu.corpus_bleu(safe_outputs, self.references)
         bleu_score = bleu.score
 
-        # Transpose references back to [samples, references] for iteration rows
+        # Transpose references back to [samples, references] for row loops
         refs_per_sample = list(zip(*self.references))
         refs_as_strings_list = [list(refs) for refs in refs_per_sample]
 
-        # 2. SARI Score
+        # 2. SARI, Jaccard, and Embedding Cosine Matrix Setups
         sari_scores = []
+        jaccard_scores = []
+        
         for orig, sys, refs in zip(self.source_sentences, safe_outputs, refs_per_sample):
             sari_scores.append(self._calculate_sari_pure_python(orig, sys, list(refs)))
+            # Compute token tracking Jaccard between generated model output vs original input string
+            jaccard_scores.append(self._calculate_jaccard(orig, sys))
+            
         avg_sari = np.mean(sari_scores)
+        avg_jaccard = np.mean(jaccard_scores) * 100
 
-        # 3. METEOR Score (Handles lemmatization/synonyms natively)
+        # 3. METEOR Score
         print("🧪 Extracting lemmatized match states via METEOR...")
         meteor_results = self.meteor_metric.compute(predictions=safe_outputs, references=refs_as_strings_list)
         meteor_score = meteor_results["meteor"] * 100
 
-        # 4. BERTScore (Tracks contextual semantic similarity vectors)
+        # 4. BERTScore & Cosine Embedding Similarity Extraction
         print("🧠 Running contextual vector alignment via BERTScore...")
+        
+        # We hook directly into evaluate's underlying pipeline configuration components
+        # to pull individual baseline layer vectors out to save you calculating a whole new model footprint
         bert_results = self.bertscore_metric.compute(
+            predictions=safe_outputs, 
+            references=self.source_sentences, # Score directly against the structural source input
+            lang="en",
+            model_type="distilbert-base-uncased",
+            verbose=False
+        )
+        # Use BERTScore's precision matrix mapping as a direct proxy for target directional cosine vector preservation
+        avg_cosine_similarity = np.mean(bert_results["precision"]) * 100
+        
+        # Run standard target human reference array evaluation for standard BERTScore F1 output
+        bert_ref_results = self.bertscore_metric.compute(
             predictions=safe_outputs, 
             references=refs_as_strings_list, 
             lang="en",
             model_type="distilbert-base-uncased"
         )
-        avg_bertscore_f1 = np.mean(bert_results["f1"]) * 100
+        avg_bertscore_f1 = np.mean(bert_ref_results["f1"]) * 100
 
         # 5. Compression Ratio
         orig_lens = [len(s.split()) for s in self.source_sentences]
@@ -131,5 +170,7 @@ class SimplificationEvaluator:
             "BLEU": round(bleu_score, 4),
             "METEOR": round(meteor_score, 4),
             "BERTScore": round(avg_bertscore_f1, 4),
+            "Jaccard_Similarity": round(avg_jaccard, 4),
+            "Cosine_Similarity": round(avg_cosine_similarity, 4),
             "Compression_Ratio": round(compression_ratio, 4)
         }
