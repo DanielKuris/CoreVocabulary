@@ -69,9 +69,9 @@ VOCAB_FILES = {
     "src/vocabularies/OgdenBasicEnglish850.txt": True
 }
 
-# 🚀 DYNAMIC GENERATION: Automatically append vocab1_100.txt through vocab1_2000.txt
+# 🚀 DYNAMIC GENERATION: Automatically append vocab_100.txt through vocab_2000.txt
 for size in range(100, 2100, 100):
-    vocab_path = f"src/vocabularies/vocab1_{size}.txt"
+    vocab_path = f"src/vocabularies/vocab_{size}.txt"
     VOCAB_FILES[vocab_path] = True
 
 # =====================================================================
