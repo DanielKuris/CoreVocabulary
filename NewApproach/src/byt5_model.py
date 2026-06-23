@@ -7,7 +7,6 @@ class TrieNode:
         self.is_end_of_word = False
 
 class VocabularyTrie:
-    """Compiled character roadmap tracking permitted morphological lexical pathways."""
     def __init__(self, vocabulary: set):
         self.root = TrieNode()
         for word in vocabulary:
@@ -19,7 +18,7 @@ class VocabularyTrie:
             if char not in node.children:
                 node.children[char] = TrieNode()
             node = node.children[char]
-        self.is_end_of_word = True
+        node.is_end_of_word = True  # Fixed leaf node tracking assignment
 
 
 class CharacterTrieNeuralSimplifier:
@@ -28,7 +27,7 @@ class CharacterTrieNeuralSimplifier:
         self.exempt_vocab = {word.lower().strip() for word in exempt_vocabulary} if exempt_vocabulary else set()
         self.full_universe = self.allowed_vocab.union(self.exempt_vocab)
         
-        print(f"🤖 Model C: Initializing Positive Constrained Character-Level Architecture ({model_name})...")
+        print(f"🤖 Initializing Positive Constrained Character-Level Architecture ({model_name})...")
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
         
@@ -36,29 +35,18 @@ class CharacterTrieNeuralSimplifier:
         self.model.to(self.device)
         self.model.eval()
 
-        # Build the positive constraint structural prefix map at startup
         self.trie = VocabularyTrie(self.full_universe)
-        
-        # Cache structural character definitions
         self.space_char = " "
         self.eos_token_id = self.tokenizer.eos_token_id
         self.pad_token_id = self.tokenizer.pad_token_id
 
     def _get_prefix_allowed_tokens(self, batch_id: int, input_ids: torch.Tensor) -> list:
-        """
-        Positive Constraint Strategy function passed directly into model.generate().
-        Maps generated characters to the Trie, returning only IDs that can legally continue or begin an allowed word.
-        """
-        # Decode history generated so far in this sequence
         decoded_history = self.tokenizer.decode(input_ids, skip_special_tokens=True).lower()
-        
-        # Pinpoint the current active word string being spelled out right now
         words = decoded_history.split(self.space_char)
         current_word_fragment = words[-1] if words else ""
         
         allowed_next_tokens = [self.eos_token_id, self.pad_token_id]
         
-        # Traverse Trie to find legal character choices that match the current fragment prefix
         node = self.trie.root
         match_possible = True
         for char in current_word_fragment:
@@ -69,17 +57,14 @@ class CharacterTrieNeuralSimplifier:
                 break
                 
         if match_possible:
-            # Add character tokens that legally extend this specific word path
             for next_char in node.children.keys():
                 token_ids = self.tokenizer.encode(next_char, add_special_tokens=False)
                 allowed_next_tokens.extend(token_ids)
                 
-            # If the current string is already a completed word on our tree, allow starting a new word (space)
             if node.is_end_of_word or current_word_fragment in self.full_universe:
                 space_ids = self.tokenizer.encode(self.space_char, add_special_tokens=False)
                 allowed_next_tokens.extend(space_ids)
         else:
-            # Safety fallback loop: if generation falls off the tree, force a space or EOS to reset the chain
             space_ids = self.tokenizer.encode(self.space_char, add_special_tokens=False)
             allowed_next_tokens.extend(space_ids)
             
@@ -88,8 +73,7 @@ class CharacterTrieNeuralSimplifier:
     def batch_simplify(self, sentences: list) -> list:
         prefix = "simplify: "
         prefixed_sentences = [prefix + sent for sent in sentences]
-        
-        batch_size = 8 # Character architectures require small batches due to deep token sequences
+        batch_size = 8
         simplified_sentences = []
         
         for i in range(0, len(prefixed_sentences), batch_size):
@@ -100,9 +84,9 @@ class CharacterTrieNeuralSimplifier:
                 outputs = self.model.generate(
                     input_ids=inputs["input_ids"],
                     attention_mask=inputs["attention_mask"],
-                    max_length=128, # Character generation requires longer sequences than words
+                    max_length=128,
                     num_beams=5,
-                    prefix_allowed_tokens_fn=self._get_prefix_allowed_tokens, # Active Positive Constraint Mapping
+                    prefix_allowed_tokens_fn=self._get_prefix_allowed_tokens,
                     early_stopping=True
                 )
                 
