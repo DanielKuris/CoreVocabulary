@@ -8,7 +8,6 @@ class CoreVocabularyLogitsProcessor:
         self.vocab_size = tokenizer.vocab_size
         self.mask = torch.full((self.vocab_size,), float("-inf"))
         
-        # Preserve structural special tokens
         for s_id in set(tokenizer.all_special_ids):
             if s_id < self.vocab_size:
                 self.mask[s_id] = 0.0
@@ -50,7 +49,7 @@ class MLMNeuralSimplifier:
             exempt_vocab=self.exempt_vocab
         )
         
-        # Pre-compile multi-token target representations to avoid runtime overhead
+        # Pre-compile multi-token maps for direct indexing lookup
         self.multi_token_words = {}
         for word in self.full_universe:
             ids = self.tokenizer.encode(word, add_special_tokens=False)
@@ -62,8 +61,6 @@ class MLMNeuralSimplifier:
 
     def batch_simplify(self, sentences: list) -> list:
         cleaned_sentences = []
-        
-        # Absolute structural baseline word for fallback guarantees
         absolute_fallback_word = list(self.allowed_vocab)[0] if self.allowed_vocab else "the"
         
         for sent in sentences:
@@ -71,11 +68,10 @@ class MLMNeuralSimplifier:
             for w_idx, original_word in enumerate(words):
                 clean_word = self._clean_token(original_word)
                 
-                # Check vocabulary compliance
                 if not clean_word or clean_word in self.full_universe:
                     continue
                 
-                # Stage 1: Evaluate single-token alternatives via logits mask
+                # Step 1: Single Inference Pass per out-of-vocab word
                 temp_words = list(words)
                 temp_words[w_idx] = self.mask_token
                 masked_str = " ".join(temp_words)
@@ -90,45 +86,32 @@ class MLMNeuralSimplifier:
                     continue
                 target_idx = mask_pos[0].item()
                 
-                single_logits = self.logits_processor(logits[target_idx])
+                # Raw distribution across entire model token layer
+                raw_token_logits = logits[target_idx]
+                log_probs = torch.log_softmax(raw_token_logits, dim=-1)
+                
+                # Evaluate single token options natively using our logits processor mask
+                single_logits = self.logits_processor(raw_token_logits)
                 best_single_token_id = torch.argmax(single_logits).item()
-                best_single_score = single_logits[best_single_token_id].item()
                 
                 best_word = self.logits_processor.single_token_words.get(best_single_token_id, None)
-                best_score = best_single_score if (best_word and best_single_token_id != self.tokenizer.unk_token_id) else float("-inf")
+                best_score = log_probs[best_single_token_id].item() if (best_word and best_single_token_id != self.tokenizer.unk_token_id) else float("-inf")
                 
-                # Stage 2: Evaluate multi-token candidates using length-normalized joint probability
+                # Step 2: Vector Matrix Lookup (No Model Calls!)
+                # Sum subword log probabilities straight from the single inference distribution pass
                 for multi_word, token_ids in self.multi_token_words.items():
-                    multi_masks = [self.mask_token] * len(token_ids)
-                    multi_temp_words = list(words)
-                    multi_temp_words[w_idx] = " ".join(multi_masks)
-                    multi_masked_str = " ".join(multi_temp_words)
-                    
-                    m_inputs = self.tokenizer(multi_masked_str, return_tensors="pt").to(self.device)
-                    with torch.no_grad():
-                        m_outputs = self.model(**m_inputs)
-                        m_logits = m_outputs.logits[0]
-                        
-                    m_mask_positions = (m_inputs.input_ids[0] == self.mask_token_id).nonzero(as_tuple=True)[0]
-                    if len(m_mask_positions) != len(token_ids):
-                        continue
-                        
                     word_score = 0.0
-                    for pos_idx, target_token_id in zip(m_mask_positions, token_ids):
-                        log_probs = torch.log_softmax(m_logits[pos_idx.item()], dim=-1)
-                        word_score += log_probs[target_token_id].item()
-                        
-                    normalized_score = word_score / len(token_ids)
+                    for t_id in token_ids:
+                        word_score += log_probs[t_id].item()
                     
+                    normalized_score = word_score / len(token_ids)
                     if normalized_score > best_score:
                         best_score = normalized_score
                         best_word = multi_word
                 
-                # Strict vocabulary boundary guarantee fallback
                 if not best_word or best_word.strip() == "":
                     best_word = absolute_fallback_word
                 
-                # Maintain original formatting parameters
                 if original_word[0] in string.punctuation and not best_word.startswith(original_word[0]):
                     best_word = original_word[0] + best_word
                 if original_word[-1] in string.punctuation and not best_word.endswith(original_word[-1]):
