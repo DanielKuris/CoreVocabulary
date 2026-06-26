@@ -3,8 +3,10 @@ import numpy as np
 import torch
 from transformers import AutoTokenizer, AutoModel
 
+GLOBAL_EMBEDDING_CACHE = {}
+
 class EmbeddingSubstitutionModel:
-    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "distilbert-base-uncased"):
+    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "distilbert-base-uncased", tokenizer=None, embedder=None):
         """
         Initializes an ultra-lean Constrained Lexical Substitution Engine.
         Matches the interface architecture of the Seq2Seq configuration.
@@ -14,9 +16,12 @@ class EmbeddingSubstitutionModel:
         self.exempt_vocab = {word.lower().strip() for word in exempt_vocabulary} if exempt_vocabulary else set()
         
         print(f"🤖 Model D: Initializing Custom Embedding Substitution Model ({model_name})...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.embedder = AutoModel.from_pretrained(model_name)
+        self.tokenizer = tokenizer if tokenizer is not None else AutoTokenizer.from_pretrained(model_name)
+        self.embedder = embedder if embedder is not None else AutoModel.from_pretrained(model_name)
         
+        if self.tokenizer.pad_token is None:
+            self.tokenizer.pad_token = self.tokenizer.eos_token
+            
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.embedder.to(self.device)
         self.embedder.eval()
@@ -31,18 +36,28 @@ class EmbeddingSubstitutionModel:
         pre-normalizing them to allow instant dot-product cosine calculations.
         """
         words = list(self.allowed_vocab)
-        vectors = []
+        words_to_compute = []
         
-        # Extract vectors for each allowed word using the tokenizer and embedder
         for word in words:
-            inputs = self.tokenizer(word, return_tensors="pt", add_special_tokens=False).to(self.device)
-            with torch.no_grad():
-                outputs = self.embedder(**inputs)
-                # Mean-pooled token hidden state
-                vec = outputs.last_hidden_state.mean(dim=1).squeeze().cpu().numpy()
-            vectors.append(vec)
-            
-        matrix = np.vstack(vectors)
+            if word not in GLOBAL_EMBEDDING_CACHE:
+                words_to_compute.append(word)
+                
+        if words_to_compute:
+            batch_size = 256
+            for idx in range(0, len(words_to_compute), batch_size):
+                batch = words_to_compute[idx:idx + batch_size]
+                inputs = self.tokenizer(batch, padding=True, return_tensors="pt", add_special_tokens=False).to(self.device)
+                with torch.no_grad():
+                    outputs = self.embedder(**inputs)
+                    mask = inputs.attention_mask.unsqueeze(-1)
+                    summed = torch.sum(outputs.last_hidden_state * mask, dim=1)
+                    counts = torch.clamp(mask.sum(dim=1), min=1)
+                    batch_vecs = (summed / counts).cpu().numpy()
+                
+                for w, vec in zip(batch, batch_vecs):
+                    GLOBAL_EMBEDDING_CACHE[w] = vec
+                    
+        matrix = np.vstack([GLOBAL_EMBEDDING_CACHE[w] for w in words])
         
         # Pre-normalize the matrix to transform downstream cosine calculation into a simple dot product
         norms = np.linalg.norm(matrix, axis=1, keepdims=True)

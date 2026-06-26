@@ -8,9 +8,13 @@ class T5SubwordTrie:
         self.eos_token_id = tokenizer.eos_token_id
         self.pad_token_id = tokenizer.pad_token_id
         
+        variants = []
         for word in vocabulary:
-            for variant in [word, f" {word}"]:
-                token_ids = tokenizer.encode(variant, add_special_tokens=False)
+            variants.extend([word, f" {word}"])
+            
+        if variants:
+            encoded_variants = tokenizer(variants, add_special_tokens=False)["input_ids"]
+            for token_ids in encoded_variants:
                 self.insert(token_ids)
 
     def insert(self, token_ids: list):
@@ -22,14 +26,14 @@ class T5SubwordTrie:
         current['<end>'] = True
 
 class DynamicT5Simplifier:
-    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "t5-small"):
+    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "t5-small", tokenizer=None, model=None):
         self.allowed_vocab = {word.lower().strip() for word in vocabulary}
         self.exempt_vocab = {word.lower().strip() for word in exempt_vocabulary} if exempt_vocabulary else set()
         self.full_universe = self.allowed_vocab.union(self.exempt_vocab)
         
         print(f"🤖 Initializing Constrained Subword T5 Engine ({model_name})...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+        self.tokenizer = tokenizer if tokenizer is not None else AutoTokenizer.from_pretrained(model_name)
+        self.model = model if model is not None else AutoModelForSeq2SeqLM.from_pretrained(model_name)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)

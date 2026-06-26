@@ -27,14 +27,14 @@ class CoreVocabularyLogitsProcessor:
 
 
 class MLMNeuralSimplifier:
-    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "distilbert-base-uncased"):
+    def __init__(self, vocabulary: set, exempt_vocabulary: set = None, model_name: str = "distilbert-base-uncased", tokenizer=None, model=None):
         self.allowed_vocab = {word.lower().strip() for word in vocabulary}
         self.exempt_vocab = {word.lower().strip() for word in exempt_vocabulary} if exempt_vocabulary else set()
         self.full_universe = self.allowed_vocab.union(self.exempt_vocab)
         
         print(f"🤖 Initializing Constrained MLM Architecture: {model_name}...")
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForMaskedLM.from_pretrained(model_name)
+        self.tokenizer = tokenizer if tokenizer is not None else AutoTokenizer.from_pretrained(model_name)
+        self.model = model if model is not None else AutoModelForMaskedLM.from_pretrained(model_name)
         
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)

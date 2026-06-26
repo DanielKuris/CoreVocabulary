@@ -1,5 +1,12 @@
 import os
 import sys
+import io
+
+# Configure stdout and stderr to use UTF-8 to prevent UnicodeEncodeError in Windows consoles
+if sys.platform.startswith('win'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 import time
 import numpy as np
 import pandas as pd
@@ -13,6 +20,51 @@ from t5_model import DynamicT5Simplifier
 from byt5_model import CharacterTrieNeuralSimplifier
 from MLM_model import MLMNeuralSimplifier
 from evaluator import SimplificationEvaluator
+from transformers import AutoTokenizer, AutoModel, AutoModelForMaskedLM, AutoModelForSeq2SeqLM
+
+# Global caching store for shared model/tokenizer instances
+MODEL_CACHE = {}
+TOKENIZER_CACHE = {}
+
+def get_cached_model_and_tokenizer(model_id: str, base_model_name: str):
+    cache_key = (model_id, base_model_name)
+    if cache_key not in MODEL_CACHE:
+        print(f"📥 Loading and caching {model_id} model weights ({base_model_name})...")
+        TOKENIZER_CACHE[cache_key] = AutoTokenizer.from_pretrained(base_model_name)
+        if model_id == "EMB_SUB":
+            MODEL_CACHE[cache_key] = AutoModel.from_pretrained(base_model_name)
+        elif model_id == "MLM":
+            MODEL_CACHE[cache_key] = AutoModelForMaskedLM.from_pretrained(base_model_name)
+        elif model_id in ["T5", "BYT5", "BYTAM"]:
+            MODEL_CACHE[cache_key] = AutoModelForSeq2SeqLM.from_pretrained(base_model_name)
+        else:
+            raise ValueError(f"Unknown model type for caching: {model_id}")
+    return TOKENIZER_CACHE[cache_key], MODEL_CACHE[cache_key]
+
+def initialize_model(model_id: str, raw_vocab_set: set, active_exempt_set: set, base_model_name: str):
+    """Factory function handling architecture isolation mapping."""
+    tokenizer, model = get_cached_model_and_tokenizer(model_id, base_model_name)
+    if model_id == "EMB_SUB":
+        return EmbeddingSubstitutionModel(
+            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name,
+            tokenizer=tokenizer, embedder=model
+        )
+    elif model_id == "MLM":
+        return MLMNeuralSimplifier(
+            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name,
+            tokenizer=tokenizer, model=model
+        )
+    elif model_id == "T5":
+        return DynamicT5Simplifier(
+            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name,
+            tokenizer=tokenizer, model=model
+        )
+    elif model_id in ["BYT5", "BYTAM"]:
+        return CharacterTrieNeuralSimplifier(
+            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name,
+            tokenizer=tokenizer, model=model
+        )
+    raise ValueError(f"Unknown model key: {model_id}")
 
 def clean_and_detokenize(text_list: list) -> list:
     """Cleans spaces around punctuation marks to avoid metric penalties."""
@@ -40,26 +92,6 @@ def compile_distribution_stats(metrics_dict: dict) -> dict:
         else:
             expanded_stats[metric_key] = scores
     return expanded_stats
-
-def initialize_model(model_id: str, raw_vocab_set: set, active_exempt_set: set, base_model_name: str):
-    """Factory function handling architecture isolation mapping."""
-    if model_id == "EMB_SUB":
-        return EmbeddingSubstitutionModel(
-            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name
-        )
-    elif model_id == "MLM":
-        return MLMNeuralSimplifier(
-            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name
-        )
-    elif model_id == "T5":
-        return DynamicT5Simplifier(
-            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name
-        )
-    elif model_id in ["BYT5", "BYTAM"]:
-        return CharacterTrieNeuralSimplifier(
-            vocabulary=raw_vocab_set, exempt_vocabulary=active_exempt_set, model_name=base_model_name
-        )
-    raise ValueError(f"Unknown model key: {model_id}")
 
 def write_scannable_dashboard(master_results: list, active_datasets: list, total_vocabs: int, elapsed_mins: float, output_txt_file: str):
     """Generates the human-scannable dashboard text file."""
