@@ -3,6 +3,7 @@ import sys
 import time
 import numpy as np
 import pandas as pd
+import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 
@@ -172,6 +173,13 @@ def run_evaluation_pipeline():
                 if remaining_jobs > 0:
                     est_remaining_mins = (remaining_jobs * (single_job_duration / len(active_datasets))) / 60.0
                     print(f"⏳ Estimated Matrix Time Remaining: {est_remaining_mins:.1f} minutes")
+
+                # Free GPU memory to prevent OOM across configurations
+                del model_instance
+                import gc
+                gc.collect()
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
 
     total_elapsed_mins = (time.time() - global_start_time) / 60.0
     if master_results:

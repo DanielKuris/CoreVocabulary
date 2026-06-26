@@ -76,7 +76,7 @@ class MLMNeuralSimplifier:
                 temp_words[w_idx] = self.mask_token
                 masked_str = " ".join(temp_words)
                 
-                inputs = self.tokenizer(masked_str, return_tensors="pt").to(self.device)
+                inputs = self.tokenizer(masked_str, truncation=True, max_length=512, return_tensors="pt").to(self.device)
                 with torch.no_grad():
                     outputs = self.model(**inputs)
                     logits = outputs.logits[0]
