@@ -45,9 +45,9 @@ class CharacterTrieNeuralSimplifier:
         self.char_to_token_ids = {}
 
     def _get_prefix_allowed_tokens(self, batch_id: int, input_ids: torch.Tensor) -> list:
-        decoded_history = self.tokenizer.decode(input_ids, skip_special_tokens=True).lower()
-        words = decoded_history.split(self.space_char)
-        current_word_fragment = words[-1] if words else ""
+        byte_list = [t_id - 3 for t_id in input_ids.tolist() if 3 <= t_id < 259]
+        decoded_history = bytes(byte_list).decode('utf-8', errors='ignore').lower()
+        current_word_fragment = decoded_history.rsplit(self.space_char, 1)[-1]
         
         allowed_next_tokens = [self.eos_token_id, self.pad_token_id]
         
@@ -63,7 +63,7 @@ class CharacterTrieNeuralSimplifier:
         if match_possible:
             for next_char in node.children.keys():
                 if next_char not in self.char_to_token_ids:
-                    self.char_to_token_ids[next_char] = self.tokenizer.encode(next_char, add_special_tokens=False)
+                    self.char_to_token_ids[next_char] = [b + 3 for b in next_char.encode('utf-8')]
                 allowed_next_tokens.extend(self.char_to_token_ids[next_char])
                 
             if node.is_end_of_word or current_word_fragment in self.full_universe:
@@ -76,7 +76,7 @@ class CharacterTrieNeuralSimplifier:
     def batch_simplify(self, sentences: list) -> list:
         prefix = "simplify: "
         prefixed_sentences = [prefix + sent for sent in sentences]
-        batch_size = 8
+        batch_size = 32
         simplified_sentences = []
         
         for i in range(0, len(prefixed_sentences), batch_size):

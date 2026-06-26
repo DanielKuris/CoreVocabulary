@@ -48,11 +48,12 @@ class DynamicT5Simplifier:
         allowed = [self.eos_id, self.pad_id]
         
         generated_tokens = input_ids.tolist()
-        active_chunk = []
-        for t_id in reversed(generated_tokens):
-            if t_id in [self.pad_id, self.eos_id, 0]: 
+        sep_idx = -1
+        for idx in range(len(generated_tokens) - 1, -1, -1):
+            if generated_tokens[idx] in [self.pad_id, self.eos_id, 0]:
+                sep_idx = idx
                 break
-            active_chunk.insert(0, t_id)
+        active_chunk = generated_tokens[sep_idx + 1:]
             
         for t_id in active_chunk:
             if t_id in current_node:
@@ -71,7 +72,7 @@ class DynamicT5Simplifier:
     def batch_simplify(self, sentences: list) -> list:
         prefix = "simplify: "
         prefixed_sentences = [prefix + sent for sent in sentences]
-        batch_size = 16
+        batch_size = 64
         simplified_sentences = []
         
         for i in range(0, len(prefixed_sentences), batch_size):
