@@ -96,6 +96,42 @@ def write_final_csv_report(master_results: list, output_csv_file: str):
     df_results = pd.DataFrame(master_results)
     df_results.to_csv(output_csv_file, index=False)
 
+def save_comparison_samples(dataset_name: str, vocab_name: str, exempt_mode: str, model_id: str, source_sentences: list, transformed_sentences: list, num_samples: int = 10, seed: int = 42):
+    """Appends comparison rows (original and transformed) for a given setting to the dataset's comparison CSV file."""
+    import random
+    import csv
+    import os
+    
+    samples_dir = "samples"
+    os.makedirs(samples_dir, exist_ok=True)
+    
+    n = min(len(source_sentences), len(transformed_sentences))
+    if n == 0:
+        return
+        
+    # Deterministically select the same indices for this dataset
+    rng = random.Random(seed)
+    sample_indices = rng.sample(range(n), min(num_samples, n))
+    sample_indices.sort()
+    
+    filename = os.path.join(samples_dir, f"{dataset_name}_comparison.csv")
+    file_exists = os.path.exists(filename)
+    
+    with open(filename, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if not file_exists:
+            writer.writerow(["Index", "Original_Sentence", "Vocabulary", "Exempt_Mode", "Model_ID", "Transformed_Sentence"])
+            
+        for idx in sample_indices:
+            writer.writerow([
+                idx,
+                source_sentences[idx],
+                vocab_name,
+                exempt_mode,
+                model_id,
+                transformed_sentences[idx]
+            ])
+
 def run_evaluation_pipeline():
     active_datasets = [ds for ds, enabled in config.DATASETS.items() if enabled]
     active_vocab_paths = [path for path, enabled in config.VOCAB_FILES.items() if enabled]
@@ -121,6 +157,13 @@ def run_evaluation_pipeline():
     
     for f in [output_csv, output_csv_final]:
         if os.path.exists(f): os.remove(f)
+
+    # Clear samples directory
+    import shutil
+    samples_dir = "samples"
+    if os.path.exists(samples_dir):
+        shutil.rmtree(samples_dir)
+    os.makedirs(samples_dir, exist_ok=True)
 
     # 🔄 LOOP 1: VOCABULARIES
     for vc_idx, vocab_path in enumerate(active_vocab_paths, 1):
@@ -170,6 +213,14 @@ def run_evaluation_pipeline():
                             run_summary = {"Dataset": target_ds, "Vocabulary": vocab_name, "Exempt_Mode": exempt_mode, "Model_ID": model_id, **metrics}
                             master_results.append(run_summary)
                             pd.DataFrame([run_summary]).to_csv(output_csv, mode='a', header=not os.path.exists(output_csv), index=False)
+                            save_comparison_samples(
+                                dataset_name=target_ds,
+                                vocab_name=vocab_name,
+                                exempt_mode=exempt_mode,
+                                model_id=model_id,
+                                source_sentences=evaluators[target_ds].source_sentences,
+                                transformed_sentences=wiki_predictions_cache
+                            )
                         except Exception as e:
                             print(f"❌ Metrics evaluation crash on {target_ds}: {e}")
                         completed_evaluations += 1
@@ -184,6 +235,14 @@ def run_evaluation_pipeline():
                         run_summary = {"Dataset": "sick", "Vocabulary": vocab_name, "Exempt_Mode": exempt_mode, "Model_ID": model_id, **metrics}
                         master_results.append(run_summary)
                         pd.DataFrame([run_summary]).to_csv(output_csv, mode='a', header=not os.path.exists(output_csv), index=False)
+                        save_comparison_samples(
+                            dataset_name="sick",
+                            vocab_name=vocab_name,
+                            exempt_mode=exempt_mode,
+                            model_id=model_id,
+                            source_sentences=evaluators["sick"].source_sentences,
+                            transformed_sentences=sick_preds
+                        )
                     except Exception as e:
                         print(f"❌ Processing crash on SICK: {e}")
                     job_duration = time.time() - job_start_clock

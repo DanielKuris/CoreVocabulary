@@ -1,0 +1,21 @@
+Index,Original_Sentence,Vocabulary,Exempt_Mode,Model_ID,Transformed_Sentence
+0,There is no boy playing outdoors and there is no man smiling,vocab_100.txt,english_stopwords,MLM,There is no man going there and there is no man.
+1,A group of boys in a yard is playing and a man is standing in the background,vocab_100.txt,english_stopwords,MLM,A group of people in a room is present and a man is present in the room
+2,A group of children is playing in the house and there is no man standing in the background,vocab_100.txt,english_stopwords,MLM,A group of people is present in the house and there is no man present in the house
+3,A brown dog is attacking another animal in front of the tall man in pants,vocab_100.txt,english_stopwords,MLM,A white man is on an end in place of the white man in.
+4,A brown dog is attacking another animal in front of the man in pants,vocab_100.txt,english_stopwords,MLM,A white man is with an area in place of the man in.
+0,There is no boy playing outdoors and there is no man smiling,vocab_100.txt,english_stopwords,EMB_SUB,There is no man even work and there is no man people
+1,A group of boys in a yard is playing and a man is standing in the background,vocab_100.txt,english_stopwords,EMB_SUB,A group of give in a home is even and a man is man in the present
+2,A group of children is playing in the house and there is no man standing in the background,vocab_100.txt,english_stopwords,EMB_SUB,A group of family is even in the house and there is no man man in the present
+3,A brown dog is attacking another animal in front of the tall man in pants,vocab_100.txt,english_stopwords,EMB_SUB,A white house is light have man in two of the business man in say
+4,A brown dog is attacking another animal in front of the man in pants,vocab_100.txt,english_stopwords,EMB_SUB,A white house is light have man in two of the man in say
+0,There is no boy playing outdoors and there is no man smiling,vocab_200.txt,english_stopwords,MLM,There is no boy going home and there is no man!
+1,A group of boys in a yard is playing and a man is standing in the background,vocab_200.txt,english_stopwords,MLM,A group of people in a room is present and a man is present in the room
+2,A group of children is playing in the house and there is no man standing in the background,vocab_200.txt,english_stopwords,MLM,A group of people is present in the house and there is no man present in the house
+3,A brown dog is attacking another animal in front of the tall man in pants,vocab_200.txt,english_stopwords,MLM,A black man is on the street in front of the white man in.
+4,A brown dog is attacking another animal in front of the man in pants,vocab_200.txt,english_stopwords,MLM,A black man is with an individual in front of the man in.
+0,There is no boy playing outdoors and there is no man smiling,vocab_200.txt,english_stopwords,EMB_SUB,There is no boy even field and there is no man law
+1,A group of boys in a yard is playing and a man is standing in the background,vocab_200.txt,english_stopwords,EMB_SUB,A group of boy in a home is even and a man is man in the child
+2,A group of children is playing in the house and there is no man standing in the background,vocab_200.txt,english_stopwords,EMB_SUB,A group of mother is even in the house and there is no man man in the child
+3,A brown dog is attacking another animal in front of the tall man in pants,vocab_200.txt,english_stopwords,EMB_SUB,A white house is show have human in front of the business man in say
+4,A brown dog is attacking another animal in front of the man in pants,vocab_200.txt,english_stopwords,EMB_SUB,A white house is show have human in front of the man in say
