@@ -1,8 +1,15 @@
 import os
+import sys
+import io
 import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+# Configure stdout and stderr to use UTF-8 to prevent UnicodeEncodeError in Windows consoles
+if sys.platform.startswith('win'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', line_buffering=True)
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', line_buffering=True)
 
 sns.set_theme(style="whitegrid")
 plt.rcParams.update({'font.size': 11, 'axes.labelsize': 12, 'axes.titlesize': 14})
@@ -38,7 +45,7 @@ def generate_benchmark_plots(csv_path="MASTER_BENCHMARK_MATRIX.csv", output_dir=
     models = plot_df['Model_ID'].unique()
     exempt_modes = plot_df['Exempt_Mode'].unique()
     
-    accuracy_metrics = ["SARI", "BLEU", "METEOR", "BERTScore", "Jaccard_Similarity", "Cosine_Similarity"]
+    accuracy_metrics = ["SARI_Avg", "BLEU_Avg", "METEOR_Avg", "BERTScore_Avg", "Jaccard_Similarity_Avg", "Cosine_Similarity_Avg"]
     
     for dataset in datasets:
         for model in models:
@@ -80,7 +87,7 @@ def generate_benchmark_plots(csv_path="MASTER_BENCHMARK_MATRIX.csv", output_dir=
                 sns.lineplot(
                     data=subset,
                     x="Vocab_Size",
-                    y="Compression_Ratio",
+                    y="Compression_Ratio_Avg",
                     marker="s",
                     color="#E63946",
                     linewidth=2.0,
@@ -92,7 +99,7 @@ def generate_benchmark_plots(csv_path="MASTER_BENCHMARK_MATRIX.csv", output_dir=
                 ax2.axhline(1.0, color="gray", linestyle="--", alpha=0.7)
                 ax2.set_xlabel("Vocabulary Size")
                 ax2.set_ylabel("Ratio")
-                ax2.set_ylim(0, max(1.5, subset['Compression_Ratio'].max() * 1.2))
+                ax2.set_ylim(0, max(1.5, subset['Compression_Ratio_Avg'].max() * 1.2))
                 ax2.set_xticks(subset['Vocab_Size'].unique())
                 ax2.set_xticklabels(subset['Vocab_Size'].unique(), rotation=45)
                 ax2.legend(loc="upper left", bbox_to_anchor=(1.02, 1))

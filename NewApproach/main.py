@@ -82,29 +82,19 @@ def compile_distribution_stats(metrics_dict: dict) -> dict:
     for metric_key, scores in metrics_dict.items():
         if isinstance(scores, (list, np.ndarray)) and len(scores) > 0:
             scores_p = np.array(scores)
-            expanded_stats[f"{metric_key}_Avg"] = float(np.mean(scores_p))
-            expanded_stats[f"{metric_key}_Median"] = float(np.median(scores_p))
-            expanded_stats[f"{metric_key}_Min"] = float(np.min(scores_p))
-            expanded_stats[f"{metric_key}_Max"] = float(np.max(scores_p))
-            expanded_stats[f"{metric_key}_P90"] = float(np.percentile(scores_p, 90))
-            
-            expanded_stats[metric_key] = expanded_stats[f"{metric_key}_Avg"]
+            expanded_stats[f"{metric_key}_Avg"] = round(float(np.mean(scores_p)), 4)
+            expanded_stats[f"{metric_key}_Median"] = round(float(np.median(scores_p)), 4)
+            expanded_stats[f"{metric_key}_Min"] = round(float(np.min(scores_p)), 4)
+            expanded_stats[f"{metric_key}_Max"] = round(float(np.max(scores_p)), 4)
+            expanded_stats[f"{metric_key}_P90"] = round(float(np.percentile(scores_p, 90)), 4)
         else:
             expanded_stats[metric_key] = scores
     return expanded_stats
 
-def write_scannable_dashboard(master_results: list, active_datasets: list, total_vocabs: int, elapsed_mins: float, output_txt_file: str):
-    """Generates the human-scannable dashboard text file."""
+def write_final_csv_report(master_results: list, output_csv_file: str):
+    """Generates the final output CSV file."""
     df_results = pd.DataFrame(master_results)
-    with open(output_txt_file, "w", encoding="utf-8") as out_file:
-        out_file.write("=======================================================\n")
-        out_file.write("📊 ProjectODR Highly-Optimized Caching Evaluation Dashboard Matrix\n")
-        out_file.write("=======================================================\n")
-        out_file.write(f"⏱️ Total Matrix Runtime Duration: {elapsed_mins:.2f} minutes\n")
-        out_file.write(f"📦 Source Datasets Evaluated   : {', '.join(active_datasets)}\n")
-        out_file.write(f"📝 Target Constraints Managed  : {total_vocabs} configuration files\n\n")
-        out_file.write(df_results.to_string(index=False))
-        out_file.write("\n\n=== END OF AUTOMATED MATRIC EVALUATION DATA REPORT ===")
+    df_results.to_csv(output_csv_file, index=False)
 
 def run_evaluation_pipeline():
     active_datasets = [ds for ds, enabled in config.DATASETS.items() if enabled]
@@ -127,9 +117,9 @@ def run_evaluation_pipeline():
     master_results = []
     global_start_time = time.time()
     single_job_duration = None
-    output_csv, output_txt = "MASTER_BENCHMARK_MATRIX.csv", "output.txt"
+    output_csv, output_csv_final = "MASTER_BENCHMARK_MATRIX.csv", "output.csv"
     
-    for f in [output_csv, output_txt]:
+    for f in [output_csv, output_csv_final]:
         if os.path.exists(f): os.remove(f)
 
     # 🔄 LOOP 1: VOCABULARIES
@@ -215,9 +205,9 @@ def run_evaluation_pipeline():
 
     total_elapsed_mins = (time.time() - global_start_time) / 60.0
     if master_results:
-        write_scannable_dashboard(master_results, active_datasets, len(active_vocab_paths), total_elapsed_mins, output_txt)
+        write_final_csv_report(master_results, output_csv_final)
 
-    print(f"\n💾 Summary written to: {output_txt}\n📊 Backend CSV compiled: {output_csv}\n⏱️ Total wall time: {total_elapsed_mins:.2f} minutes")
+    print(f"\n💾 Summary written to: {output_csv_final}\n📊 Backend CSV compiled: {output_csv}\n⏱️ Total wall time: {total_elapsed_mins:.2f} minutes")
 
 if __name__ == "__main__":
     run_evaluation_pipeline()

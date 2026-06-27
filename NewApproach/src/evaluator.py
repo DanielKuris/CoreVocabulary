@@ -17,6 +17,7 @@ logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
 datasets.logging.set_verbosity_error()
 
 nltk.download("wordnet", quiet=True)
+nltk.download("punkt", quiet=True)
 nltk.download("punkt_tab", quiet=True)
 nltk.download("omw-1.4", quiet=True)
 
@@ -121,6 +122,9 @@ class SimplificationEvaluator:
         return len(intersection) / max(len(union), 1)
 
     def compute_metrics(self, system_outputs: list) -> dict:
+        from nltk.translate.meteor_score import meteor_score
+        from nltk.tokenize import word_tokenize
+
         if not self.source_sentences:
             raise ValueError("Dataset not loaded. Call load_data() first.")
 
@@ -133,25 +137,25 @@ class SimplificationEvaluator:
             else:
                 safe_outputs.append(str(out).strip())
 
-        bleu = sacrebleu.corpus_bleu(safe_outputs, self.references)
-        bleu_score = bleu.score
-
         refs_per_sample = list(zip(*self.references))
         refs_as_strings_list = [list(refs) for refs in refs_per_sample]
 
         sari_scores = []
         jaccard_scores = []
+        bleu_scores = []
+        meteor_scores = []
         
         for orig, sys, refs in zip(self.source_sentences, safe_outputs, refs_per_sample):
             sari_scores.append(self._calculate_sari_pure_python(orig, sys, list(refs)))
             jaccard_scores.append(self._calculate_jaccard(orig, sys))
+            bleu_scores.append(sacrebleu.sentence_bleu(sys, list(refs)).score)
             
-        avg_sari = np.mean(sari_scores)
-        avg_jaccard = np.mean(jaccard_scores) * 100
-
-        print("🧪 Extracting lemmatized match states via METEOR...")
-        meteor_results = self.__class__.meteor_metric.compute(predictions=safe_outputs, references=refs_as_strings_list)
-        meteor_score = meteor_results["meteor"] * 100
+            # Sentence-level METEOR using nltk
+            sys_tokens = word_tokenize(sys)
+            refs_tokens = [word_tokenize(r) for r in refs]
+            meteor_scores.append(meteor_score(refs_tokens, sys_tokens) * 100)
+            
+        jaccard_scores_pct = [j * 100 for j in jaccard_scores]
 
         print("🧠 Running contextual vector alignment via BERTScore...")
         bert_results = self.__class__.bertscore_metric.compute(
@@ -161,7 +165,7 @@ class SimplificationEvaluator:
             model_type="distilbert-base-uncased",
             verbose=False
         )
-        avg_cosine_similarity = np.mean(bert_results["precision"]) * 100
+        cosine_similarity_scores = [p * 100 for p in bert_results["precision"]]
         
         bert_ref_results = self.__class__.bertscore_metric.compute(
             predictions=safe_outputs, 
@@ -169,18 +173,21 @@ class SimplificationEvaluator:
             lang="en",
             model_type="distilbert-base-uncased"
         )
-        avg_bertscore_f1 = np.mean(bert_ref_results["f1"]) * 100
+        bertscore_scores = [f * 100 for f in bert_ref_results["f1"]]
 
         orig_lens = [len(s.split()) for s in self.source_sentences]
         sys_lens = [len(s.split()) for s in safe_outputs]
-        compression_ratio = np.mean(sys_lens) / np.mean(orig_lens)
+        compression_ratios = [
+            s_len / o_len if o_len > 0 else 1.0 
+            for s_len, o_len in zip(sys_lens, orig_lens)
+        ]
 
         return {
-            "SARI": round(avg_sari, 4),
-            "BLEU": round(bleu_score, 4),
-            "METEOR": round(meteor_score, 4),
-            "BERTScore": round(avg_bertscore_f1, 4),
-            "Jaccard_Similarity": round(avg_jaccard, 4),
-            "Cosine_Similarity": round(avg_cosine_similarity, 4),
-            "Compression_Ratio": round(compression_ratio, 4)
+            "SARI": sari_scores,
+            "BLEU": bleu_scores,
+            "METEOR": meteor_scores,
+            "BERTScore": bertscore_scores,
+            "Jaccard_Similarity": jaccard_scores_pct,
+            "Cosine_Similarity": cosine_similarity_scores,
+            "Compression_Ratio": compression_ratios
         }
