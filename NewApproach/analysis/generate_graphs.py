@@ -131,7 +131,7 @@ def main():
                 linewidth=2.5,
                 markersize=5,
                 color=model_colors[model],
-                label=f"{model} (Avg Cosine Sim)"
+                label=f"{model}"
             )
     ax1c.set_title("Model Meaning Preservation vs. Vocabulary Size", pad=15)
     ax1c.set_xlabel("Vocabulary Size")
