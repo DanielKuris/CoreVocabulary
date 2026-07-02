@@ -93,6 +93,59 @@ def main():
     plt.close()
     print(f"Saved Graph 1 (Model scaling) to: {os.path.abspath(fig1_path)}")
 
+    # Graph 1b: Model Simplification Quality (METEOR) vs. Vocabulary Size
+    fig1b, ax1b = plt.subplots(figsize=(8, 5))
+    for model in ['MLM', 'EMB_SUB', 'BYT5', 'T5']:
+        model_data = g1_df[g1_df['Model_ID'] == model]
+        if not model_data.empty:
+            ax1b.plot(
+                model_data['Vocab_Size'],
+                model_data['METEOR_Avg'],
+                marker='o',
+                linewidth=2.5,
+                markersize=5,
+                color=model_colors[model],
+                label=f"{model} (Avg METEOR)"
+            )
+    ax1b.set_title("Model Simplification Fluency (METEOR) vs. Vocabulary Size\n(Dataset: ASSET | Exemption Mode: english_stopwords)", pad=15)
+    ax1b.set_xlabel("Core Vocabulary Size (Allowed Word Count)")
+    ax1b.set_ylabel("METEOR Score (Higher is Better)")
+    ax1b.set_ylim(0, 55)
+    ax1b.set_xticks(np.arange(100, 2001, 200))
+    ax1b.legend(loc="lower right", frameon=True, facecolor='white', edgecolor='none')
+    plt.tight_layout()
+    fig1b_path = os.path.join(output_dir, "model_comparison_meteor.png")
+    plt.savefig(fig1b_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved Graph 1b (Model scaling - METEOR) to: {os.path.abspath(fig1b_path)}")
+
+    # Graph 1c: Model Meaning Preservation (Cosine Similarity) vs. Vocabulary Size
+    fig1c, ax1c = plt.subplots(figsize=(8, 5))
+    for model in ['MLM', 'EMB_SUB', 'BYT5', 'T5']:
+        model_data = g1_df[g1_df['Model_ID'] == model]
+        if not model_data.empty:
+            ax1c.plot(
+                model_data['Vocab_Size'],
+                model_data['Cosine_Similarity_Avg'],
+                marker='o',
+                linewidth=2.5,
+                markersize=5,
+                color=model_colors[model],
+                label=f"{model} (Avg Cosine Sim)"
+            )
+    ax1c.set_title("Model Meaning Preservation vs. Vocabulary Size", pad=15)
+    ax1c.set_xlabel("Vocabulary Size")
+    ax1c.set_ylabel("Cosine Similarity")
+    ax1c.set_ylim(50, 95)
+    ax1c.set_xticks(np.arange(100, 2001, 200))
+    ax1c.legend(loc="lower right", frameon=True, facecolor='white', edgecolor='none')
+    plt.tight_layout()
+    fig1c_path = os.path.join(output_dir, "model_comparison_cosine.png")
+    plt.savefig(fig1c_path, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Saved Graph 1c (Model scaling - Cosine Sim) to: {os.path.abspath(fig1c_path)}")
+
+
     # Graph 2: The Stopword Exemption Impact
     # Compare english_stopwords vs none on BERTScore for MLM (the best model) on ASSET dataset
     fig2, ax2 = plt.subplots(figsize=(8, 5))
@@ -181,9 +234,9 @@ def main():
             color='#333333'
         )
 
-    ax3.set_title("Model Architecture Trade-offs (Grammar vs. Context)", pad=15)
-    ax3.set_xlabel("Meaning Preservation (BERTScore Avg %)")
-    ax3.set_ylabel("Grammatical Fluency / Similarity (METEOR Avg %)")
+    ax3.set_title("Model Architecture Trade-offs", pad=15)
+    ax3.set_xlabel("Meaning Preservation")
+    ax3.set_ylabel("Grammatical Fluency")
     ax3.set_xlim(55, 83)
     ax3.set_ylim(0, 35)
 

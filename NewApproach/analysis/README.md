@@ -11,11 +11,14 @@ This directory contains scripts to inspect, analyze, and visualize the output of
    * Highlights the peak-performing combinations per dataset.
 
 2. **`generate_graphs.py`**:
-   * Generates the three consolidated, non-cluttered visualizations illustrating the core findings of the paper.
+   * Generates the five consolidated, non-cluttered visualizations illustrating the core findings of the paper.
    * Saves graphs to `analysis/plots/`:
      * `model_comparison.png`: Metric scaling (SARI) vs. vocabulary size for all four models.
+     * `model_comparison_meteor.png`: Metric scaling (METEOR) vs. vocabulary size for all four models.
+     * `model_comparison_cosine.png`: Meaning preservation scaling (Cosine Similarity) vs. vocabulary size for all four models.
      * `stopword_exemption.png`: Semantic preservation (BERTScore) vs. vocabulary size comparing stopword exemption configurations.
      * `tradeoffs.png`: A scatter plot evaluating the trade-offs between Grammatical Fluency (METEOR) and Meaning Preservation (BERTScore) for all architectures.
+
 
 
 3. **`extract_examples.py`**:
